@@ -59,8 +59,8 @@ export const LoginForm: React.FC = () => {
           email: `${firebaseUser.ra}@student.edu`,
           level: Math.floor(firebaseUser.score / 1000) + 1,
           totalScore: firebaseUser.score,
-          gamesPlayed: 0, // This could be tracked separately if needed
-          correctAnswers: 0 // This could be tracked separately if needed
+          gamesPlayed: 0, 
+          correctAnswers: 0 
         };
 
         setUser(user);
@@ -268,17 +268,6 @@ export const LoginForm: React.FC = () => {
         </div>
 
         {/* Firebase Info */}
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <div className="flex items-center space-x-2 mb-2">
-            <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-            <h4 className="font-semibold text-blue-800 text-sm">Firebase Realtime DB</h4>
-          </div>
-          <div className="text-xs text-blue-700 space-y-1">
-            <p>• Autenticação segura baseada em RA</p>
-            <p>• Dados persistentes em tempo real</p>
-            <p>• Validação de RA único</p>
-          </div>
-        </div>
       </motion.div>
     </div>
   );
