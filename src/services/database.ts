@@ -1,6 +1,6 @@
 // MongoDB-like database service using IndexedDB for persistent storage
 // This can be easily replaced with actual MongoDB API calls
-
+/*
 interface UserDocument {
   _id: string;
   name: string;
@@ -219,4 +219,4 @@ export const database = new MongoLikeDatabase();
 // Initialize database when module loads
 database.init().catch(console.error);
 
-export type { UserDocument, GameDocument };
+export type { UserDocument, GameDocument };*/
