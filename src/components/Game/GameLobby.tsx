@@ -55,7 +55,7 @@ export const GameLobby: React.FC = () => {
                   
                   <button
                     onClick={startGame}
-                    disabled={currentRoom.players.length < 2}
+                    disabled={currentRoom.players.length < 1}
                     className="flex items-center space-x-2 px-6 py-2 bg-gradient-nature text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Play className="h-5 w-5" />
@@ -102,7 +102,7 @@ export const GameLobby: React.FC = () => {
             ))}
           </div>
 
-          {!isRoomOwner && currentRoom.players.length < 2 && (
+          {!isRoomOwner && currentRoom.players.length < 1 && (
             <div className="mt-8 text-center">
               <p className="text-gray-600">Waiting for the host to start the game...</p>
             </div>
@@ -230,6 +230,7 @@ export const GameLobby: React.FC = () => {
                   onChange={(e) => setMaxPlayers(Number(e.target.value))}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 >
+                  <option value={1}>1 Players</option>
                   <option value={2}>2 Players</option>
                   <option value={4}>4 Players</option>
                   <option value={6}>6 Players</option>
