@@ -21,7 +21,7 @@ export const LoginForm: React.FC = () => {
     }
 
     if (!/^\d{6}$/.test(ra)) {
-      setError('RA deve conter exatamente 6 dígitos');
+      setError('RA deve conter 6 dígitos');
       return false;
     }
 
@@ -52,7 +52,7 @@ export const LoginForm: React.FC = () => {
         // Login
         const firebaseUser = await firebaseAuth.loginUser(ra);
         
-        // Convert Firebase user to app user format
+        // Converter usuario firebase para usuario do app
         const user = {
           id: firebaseUser.ra,
           name: firebaseUser.username,
@@ -66,10 +66,10 @@ export const LoginForm: React.FC = () => {
         setUser(user);
         setSuccess('Login realizado com sucesso!');
       } else {
-        // Registration
+        // Registro
         const firebaseUser = await firebaseAuth.registerUser(username, ra);
         
-        // Convert Firebase user to app user format
+        // Converter usuario firebase para usuario do app
         const user = {
           id: firebaseUser.ra,
           name: firebaseUser.username,
@@ -171,7 +171,7 @@ export const LoginForm: React.FC = () => {
                       setError(null);
                     }}
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                    placeholder="Digite seu nome de usuário"
+                    placeholder="Digite seu nome"
                     disabled={isLoading}
                   />
                 </div>
@@ -190,17 +190,14 @@ export const LoginForm: React.FC = () => {
                 value={ra}
                 onChange={handleRAChange}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                placeholder="Digite seu RA (6 dígitos)"
+                placeholder="Digite seu RA"
                 maxLength={6}
                 disabled={isLoading}
               />
             </div>
-            <p className="text-xs text-gray-500 mt-1">
-              Exemplo: 123456 (exatamente 6 dígitos)
-            </p>
           </div>
 
-          {/* Error Message */}
+          {/* Mensagem de erro */}
           <AnimatePresence>
             {error && (
               <motion.div
@@ -215,7 +212,7 @@ export const LoginForm: React.FC = () => {
             )}
           </AnimatePresence>
 
-          {/* Success Message */}
+          {/* Mensagem de sucesso */}
           <AnimatePresence>
             {success && (
               <motion.div
@@ -232,7 +229,7 @@ export const LoginForm: React.FC = () => {
             )}
           </AnimatePresence>
 
-          {/* Submit Button */}
+          {/* Botão */}
           <button
             type="submit"
             disabled={isLoading}
@@ -267,7 +264,7 @@ export const LoginForm: React.FC = () => {
           </p>
         </div>
 
-        {/* Firebase Info */}
+        {/* Firebase */}
       </motion.div>
     </div>
   );
