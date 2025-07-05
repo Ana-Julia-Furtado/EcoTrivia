@@ -163,22 +163,6 @@ export const Dashboard: React.FC = () => {
             </div>
             <p className="text-xs opacity-75">3/5 completado</p>
           </div>
-
-          {/* Database Status */}
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-              <h3 className="font-semibold">Banco de Dados</h3>
-            </div>
-            <p className="text-sm opacity-90 mb-2">
-              MongoDB-like storage ativo
-            </p>
-            <div className="text-xs opacity-75 space-y-1">
-              <p>• Dados persistentes</p>
-              <p>• Sincronização automática</p>
-              <p>• Histórico completo</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
