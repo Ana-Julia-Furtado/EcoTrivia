@@ -148,21 +148,6 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
           </div>
-
-          {/* Daily Challenge */}
-          <div className="bg-gradient-nature rounded-xl shadow-lg p-6 text-white">
-            <div className="flex items-center space-x-2 mb-3">
-              <Calendar className="h-5 w-5" />
-              <h3 className="font-semibold">Desafio Diário</h3>
-            </div>
-            <p className="text-sm opacity-90 mb-4">
-              Responda 5 perguntas sobre energia renovável
-            </p>
-            <div className="w-full bg-white/20 rounded-full h-2 mb-3">
-              <div className="bg-white h-2 rounded-full w-3/5"></div>
-            </div>
-            <p className="text-xs opacity-75">3/5 completado</p>
-          </div>
         </div>
       </div>
     </div>
