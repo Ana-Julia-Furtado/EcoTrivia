@@ -116,49 +116,6 @@ export const UserStats: React.FC = () => {
           ))}
         </div>
       </div>
-
-      {/* Additional Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h4 className="text-lg font-semibold text-gray-900 mb-4">Desempenho</h4>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">Melhor Pontuação</span>
-              <span className="font-bold text-primary-600">{stats.bestScore}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">Média por Jogo</span>
-              <span className="font-bold text-secondary-600">{stats.averageScore}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">Respostas Corretas</span>
-              <span className="font-bold text-earth-600">{stats.totalCorrectAnswers}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Recent Activity */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Atividade Recente</h3>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">Dados salvos no banco</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">Alcançou Nível {currentUser.level}</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">Pontuação: {currentUser.totalScore}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
+  </div>
   );
 };
