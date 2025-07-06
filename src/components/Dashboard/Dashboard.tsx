@@ -121,26 +121,8 @@ export const Dashboard: React.FC = () => {
         <div className="space-y-6">
           <OnlineUsers />
 
-          {/* Live Stats */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Estatísticas Ao Vivo</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Salas Ativas</span>
-                <span className="font-bold text-primary-600">{activeRooms}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Jogadores em Salas</span>
-                <span className="font-bold text-secondary-600">{totalPlayers}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Seu Ranking</span>
-                <span className="font-bold text-earth-600">#42</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
