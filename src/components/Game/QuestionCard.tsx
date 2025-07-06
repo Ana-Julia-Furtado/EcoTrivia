@@ -28,7 +28,7 @@ export const QuestionCard: React.FC = () => {
   const [pointsEarned, setPointsEarned] = useState(0)
   const [isSavingToFirebase, setIsSavingToFirebase] = useState(false)
 
-  // ⛔ Se currentQuestion for null, retorna tela de loading
+
   if (!currentQuestion) {
     return (
       <div className="max-w-4xl mx-auto p-6">
@@ -39,7 +39,7 @@ export const QuestionCard: React.FC = () => {
     )
   }
 
-  // ✅ Após a verificação acima, TypeScript sabe que currentQuestion não é mais null
+
   const category = questionCategories[currentQuestion.category]
   const userAnswer = playerAnswers.find((a) => a.playerId === currentUser?.id)
 
@@ -255,41 +255,36 @@ export const QuestionCard: React.FC = () => {
                 </div>
                 <div className="space-y-1">
                   <p className={`text-sm ${isCorrect ? "text-green-700" : "text-red-700"}`}>
-                    You earned {pointsEarned} points
+                    Você ganhou {pointsEarned} pontos
                   </p>
                   {isCorrect && pointsEarned > currentQuestion.points && (
                     <p className="text-xs text-green-600">
-                      Includes time bonus: +{pointsEarned - currentQuestion.points} points
-                    </p>
-                  )}
-                  {currentUser && (
-                    <p className="text-xs text-gray-600">
-                      Total score: {currentUser.totalScore} points (Level {currentUser.level})
+                      Tempo bonus incluido: +{pointsEarned - currentQuestion.points} pontos
                     </p>
                   )}
                 </div>
                 {!isCorrect && selectedAnswer !== null && (
                   <p className="text-sm text-red-600 mt-2">
-                    The correct answer was: {currentQuestion.options[currentQuestion.correctAnswer]}
+                    A resposta correta é: {currentQuestion.options[currentQuestion.correctAnswer]}
                   </p>
                 )}
               </div>
 
               {currentGameSession && (
                 <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
-                  <h4 className="font-semibold text-gray-800 mb-2">Session Progress</h4>
+                  <h4 className="font-semibold text-gray-800 mb-2">Progresso da Sessão</h4>
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div className="text-center">
                       <p className="font-medium text-gray-900">{currentGameSession.questionsAnswered}</p>
-                      <p className="text-gray-600">Questions</p>
+                      <p className="text-gray-600">Perguntas</p>
                     </div>
                     <div className="text-center">
                       <p className="font-medium text-green-600">{currentGameSession.correctAnswers}</p>
-                      <p className="text-gray-600">Correct</p>
+                      <p className="text-gray-600">Correto</p>
                     </div>
                     <div className="text-center">
                       <p className="font-medium text-blue-600">{currentGameSession.totalScore}</p>
-                      <p className="text-gray-600">Session Points</p>
+                      <p className="text-gray-600">Pontos Totais</p>
                     </div>
                   </div>
                 </div>
@@ -297,7 +292,7 @@ export const QuestionCard: React.FC = () => {
 
               {currentQuestion.explanation && (
                 <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-                  <h4 className="font-semibold text-blue-800 mb-2">Explanation</h4>
+                  <h4 className="font-semibold text-blue-800 mb-2">Explicação</h4>
                   <p className="text-blue-700">{currentQuestion.explanation}</p>
                 </div>
               )}
