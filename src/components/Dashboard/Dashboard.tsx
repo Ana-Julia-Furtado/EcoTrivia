@@ -1,10 +1,16 @@
 import React from 'react';
-import { Play, Users, Trophy, TrendingUp, Award, Calendar, Zap } from 'lucide-react';
+import {
+  Play,
+  Users,
+  Trophy,
+  Zap
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
 import { useGameStore } from '../../store/gameStore';
 import { OnlineUsers } from './OnlineUsers';
 import { UserStats } from './UserStats';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 
 export const Dashboard: React.FC = () => {
   const { currentUser, availableRooms } = useGameStore();
@@ -12,37 +18,43 @@ export const Dashboard: React.FC = () => {
 
   if (!currentUser) return null;
 
-  const activeRooms = availableRooms.filter(room => !room.isPrivate && room.gameState === 'waiting').length;
-  const totalPlayers = availableRooms.reduce((sum, room) => sum + room.players.length, 0);
+  const activeRooms = availableRooms.filter(
+    (room) => !room.isPrivate && room.gameState === 'waiting'
+  ).length;
+
+  const totalPlayers = availableRooms.reduce(
+    (sum, room) => sum + room.players.length,
+    0
+  );
 
   const quickActions = [
-    { 
-      icon: Play, 
-      label: 'Jogo Rápido', 
+    {
+      icon: Play,
+      label: 'Jogo Rápido',
       description: 'Entrar em um jogo aleatório',
       action: () => navigate('/game'),
-      color: 'from-primary-500 to-primary-700'
+      color: 'from-primary-500 to-primary-700',
     },
-    { 
-      icon: Users, 
-      label: 'Criar Sala', 
+    {
+      icon: Users,
+      label: 'Criar Sala',
       description: 'Iniciar um jogo privado',
       action: () => navigate('/game'),
-      color: 'from-secondary-500 to-secondary-700'
+      color: 'from-secondary-500 to-secondary-700',
     },
-    { 
-      icon: Trophy, 
-      label: 'Ranking', 
+    {
+      icon: Trophy,
+      label: 'Ranking',
       description: 'Ver melhores jogadores',
-      action: () => {},
-      color: 'from-earth-500 to-earth-700'
-    }
+      action: () => {}, // Ajuste depois para redirecionar ao ranking
+      color: 'from-earth-500 to-earth-700',
+    },
   ];
 
   return (
     <div className="max-w-7xl mx-auto p-6">
       {/* Welcome Section */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-2xl shadow-xl p-8 mb-8"
@@ -55,7 +67,7 @@ export const Dashboard: React.FC = () => {
             <p className="text-gray-600 text-lg">
               Pronto para testar seus conhecimentos ambientais?
             </p>
-            <div className="mt-4 flex items-center space-x-4 text-sm text-gray-600">
+            <div className="mt-4 flex flex-wrap items-center space-x-2 text-sm text-gray-600">
               <span>RA: {currentUser.id}</span>
               <span>•</span>
               <span>Nível {currentUser.level}</span>
@@ -63,7 +75,7 @@ export const Dashboard: React.FC = () => {
               <span>{currentUser.totalScore} pontos totais</span>
             </div>
           </div>
-          
+
           <div className="mt-4 md:mt-0 flex items-center space-x-4">
             <div className="bg-gradient-nature p-4 rounded-full">
               <Zap className="h-8 w-8 text-white" />
@@ -79,27 +91,26 @@ export const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2">
-          {/* User Stats */}
           <UserStats />
 
           {/* Quick Actions */}
           <div className="mt-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Ações Rápidas</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {quickActions.map((action, index) => (
+              {quickActions.map(({ icon: Icon, label, description, action, color }, index) => (
                 <motion.button
-                  key={action.label}
+                  key={label}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  onClick={action.action}
+                  onClick={action}
                   className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transform hover:scale-105 transition-all text-left"
                 >
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${action.color} flex items-center justify-center mb-4`}>
-                    <action.icon className="h-6 w-6 text-white" />
+                  <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${color} flex items-center justify-center mb-4`}>
+                    <Icon className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{action.label}</h3>
-                  <p className="text-gray-600 text-sm">{action.description}</p>
+                  <h3 className="font-semibold text-gray-900 mb-2">{label}</h3>
+                  <p className="text-gray-600 text-sm">{description}</p>
                 </motion.button>
               ))}
             </div>
@@ -108,7 +119,6 @@ export const Dashboard: React.FC = () => {
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Online Users */}
           <OnlineUsers />
 
           {/* Live Stats */}
@@ -126,25 +136,6 @@ export const Dashboard: React.FC = () => {
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">Seu Ranking</span>
                 <span className="font-bold text-earth-600">#42</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Recent Activity */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Atividade Recente</h3>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">Dados salvos no banco</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">Alcançou Nível {currentUser.level}</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">Pontuação: {currentUser.totalScore}</span>
               </div>
             </div>
           </div>
