@@ -4,6 +4,7 @@ import { User, GameRoom, Question, GameState, PlayerAnswer, GameSettings } from 
 import { mockQuestions } from '../data/questions';
 import { firebaseAuth } from '../services/firebaseAuth';
 
+
 interface GameStore {
   // User state
   currentUser: User | null;
@@ -60,12 +61,13 @@ const defaultGameSettings: GameSettings = {
 // Mock online users for demonstration
 const generateMockOnlineUsers = (): User[] => {
   const mockUsers = [
-    { id: '158435', name: 'Ana Júlia Furtado', email: '158435@student.edu', level: 10, totalScore: 1250, gamesPlayed: 8, correctAnswers: 45 },
-    { id: '148723', name: 'Natã da Silva Almeida', email: '148723@student.edu', level: 10, totalScore: 1250, gamesPlayed: 8, correctAnswers: 45 },
-    { id: '176563', name: 'Livia de Moura Carvalho', email: '176563@student.edu', level: 7, totalScore: 1100, gamesPlayed: 5, correctAnswers: 22 },
-    { id: '163911', name: 'Lucas Alves Nascimento Marques', email: '163911@student.edu', level: 4, totalScore: 900, gamesPlayed: 5, correctAnswers: 30 }
+    { id: '158435', name: 'Ana Júlia Furtado', level: 10, totalScore: 0, gamesPlayed: 8, correctAnswers: 45 },
+    { id: '148723', name: 'Natã da Silva Almeida', level: 10, totalScore: 1250, gamesPlayed: 8, correctAnswers: 45 },
+    { id: '176563', name: 'Livia de Moura Carvalho', level: 7, totalScore: 1100, gamesPlayed: 5, correctAnswers: 22 },
+    { id: '163911', name: 'Lucas Alves Nascimento Marques', level: 4, totalScore: 900, gamesPlayed: 5, correctAnswers: 30 }
   ];
   
+
   // Randomly select 3-6 users to be "online"
   const shuffled = mockUsers.sort(() => 0.5 - Math.random());
   const onlineCount = Math.floor(Math.random() * 4) + 3; // 3-6 users

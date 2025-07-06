@@ -1,7 +1,6 @@
 export interface User {
   id: string; // Now using RA as ID
   name: string;
-  email: string; // Generated from RA
   avatar?: string;
   level: number;
   totalScore: number;
