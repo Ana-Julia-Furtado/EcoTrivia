@@ -137,37 +137,28 @@ export const UserStats: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h4 className="text-lg font-semibold text-gray-900 mb-4">Histórico Recente</h4>
-          <div className="space-y-3">
-            {userGames.slice(0, 5).map((game, index) => (
-              <div key={game._id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                <div>
-                  <p className="font-medium text-gray-900">{game.score} pontos</p>
-                  <p className="text-sm text-gray-600">
-                    {game.correctAnswers}/{game.questionsAnswered} corretas
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-600">
-                    {new Date(game.gameDate).toLocaleDateString('pt-BR')}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {Math.floor(game.duration / 60)}:{(game.duration % 60).toString().padStart(2, '0')}
-                  </p>
-                </div>
+        {/* Recent Activity */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Atividade Recente</h3>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-sm text-gray-600">Dados salvos no banco</span>
               </div>
-            ))}
-            
-            {userGames.length === 0 && (
-              <div className="text-center py-4">
-                <Calendar className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-                <p className="text-gray-500 text-sm">Nenhum jogo realizado ainda</p>
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span className="text-sm text-gray-600">Alcançou Nível {currentUser.level}</span>
               </div>
-            )}
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                <span className="text-sm text-gray-600">Pontuação: {currentUser.totalScore}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+
+
   );
 };
