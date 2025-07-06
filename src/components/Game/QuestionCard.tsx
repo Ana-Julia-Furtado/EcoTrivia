@@ -303,7 +303,7 @@ export const QuestionCard: React.FC = () => {
                   disabled={isSavingToFirebase}
                   className="px-8 py-3 bg-gradient-nature text-white rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSavingToFirebase ? "Saving..." : "Next Question"}
+                  {isSavingToFirebase ? "Salvando" : "Proxima pergunta"}
                 </button>
               </div>
             </div>
