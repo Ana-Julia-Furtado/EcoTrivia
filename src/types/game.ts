@@ -20,14 +20,29 @@ export interface Question {
   points: number;
 }
 
-export type QuestionCategory = 
-  | 'recycling'
-  | 'biodiversity'
-  | 'energy'
-  | 'climate-change'
-  | 'sustainable-consumption'
-  | 'pollution'
-  | 'conservation';
+export type QuestionCategory =
+  'reciclagem' |
+  'biodiversidade' |
+  'energia' |
+  'mudancas_climaticas' | 
+  'consumo' |
+  'poluicao' |
+  'conservacao' |
+  'sustentabilidade' |
+  'ecossistemas' |
+  'residuos' |
+  'recursos_hidricos' |
+  'politica_ambiental' |
+  'oceanos' |
+  'solo' |
+  'urbanizacao' |
+  'conscientizacao' |
+  'poluicao_da_agua' |
+  'alimentacao_sustentavel' |
+  'atmosfera' |
+  'poluicao_plastica' |
+  'poluicao_do_ar' |
+  'energias_renovaveis';
 
 export interface GameRoom {
   id: string;
