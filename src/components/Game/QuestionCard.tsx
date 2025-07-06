@@ -33,7 +33,7 @@ export const QuestionCard: React.FC = () => {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-900">Loading question...</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Carregando pergunta...</h2>
         </div>
       </div>
     )
@@ -159,7 +159,7 @@ export const QuestionCard: React.FC = () => {
               <div>
                 <h3 className="text-lg font-semibold">{category.name}</h3>
                 <p className="text-sm opacity-90 capitalize">
-                  {currentQuestion.difficulty} • {currentQuestion.points} points
+                  {currentQuestion.difficulty} • {currentQuestion.points} pontos
                 </p>
               </div>
             </div>
@@ -250,18 +250,13 @@ export const QuestionCard: React.FC = () => {
                     <XCircle className="h-5 w-5 text-red-600" />
                   )}
                   <span className={`font-semibold ${isCorrect ? "text-green-800" : "text-red-800"}`}>
-                    {isCorrect ? "Correct!" : selectedAnswer === null ? "Time's up!" : "Incorrect"}
+                    {isCorrect ? "Correto!" : selectedAnswer === null ? "Acabou o tempo!" : "Incorreto"}
                   </span>
                 </div>
                 <div className="space-y-1">
                   <p className={`text-sm ${isCorrect ? "text-green-700" : "text-red-700"}`}>
                     Você ganhou {pointsEarned} pontos
                   </p>
-                  {isCorrect && pointsEarned > currentQuestion.points && (
-                    <p className="text-xs text-green-600">
-                      Tempo bonus incluido: +{pointsEarned - currentQuestion.points} pontos
-                    </p>
-                  )}
                 </div>
                 {!isCorrect && selectedAnswer !== null && (
                   <p className="text-sm text-red-600 mt-2">
@@ -303,7 +298,11 @@ export const QuestionCard: React.FC = () => {
                   disabled={isSavingToFirebase}
                   className="px-8 py-3 bg-gradient-nature text-white rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
+<<<<<<< HEAD
                   {isSavingToFirebase ? "Salvando" : "Proxima pergunta"}
+=======
+                  {isSavingToFirebase ? "Salvando..." : "Proxima pergunta"}
+>>>>>>> 88f3e69 (Update questionCard)
                 </button>
               </div>
             </div>
