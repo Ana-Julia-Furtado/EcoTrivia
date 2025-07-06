@@ -38,19 +38,6 @@ export const GameResults: React.FC = () => {
     }
   };
 
-  const shareResults = () => {
-    const text = `I just scored ${userScore} points and ranked #${userRank} in EcoTrivia! 🌱 Test your environmental knowledge: `;
-    if (navigator.share) {
-      navigator.share({
-        title: 'EcoTrivia Results',
-        text,
-        url: window.location.origin
-      });
-    } else {
-      navigator.clipboard.writeText(text + window.location.origin);
-      // You could show a toast notification here
-    }
-  };
 
   const handleBackToDashboard = () => {
     leaveRoom();
@@ -82,7 +69,7 @@ export const GameResults: React.FC = () => {
 
         {/* Results */}
         <div className="p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Final Rankings</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Ranking final</h2>
           
           <div className="space-y-4 mb-8">
             {sortedPlayers.map((player, index) => (
@@ -109,7 +96,7 @@ export const GameResults: React.FC = () => {
                 
                 <div className="text-right">
                   <p className="text-2xl font-bold text-gray-900">{player.score}</p>
-                  <p className="text-sm text-gray-600">points</p>
+                  <p className="text-sm text-gray-600">pontos</p>
                 </div>
               </motion.div>
             ))}
@@ -119,32 +106,25 @@ export const GameResults: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="bg-gradient-to-r from-primary-50 to-primary-100 p-6 rounded-xl text-center">
               <Users className="h-8 w-8 text-primary-600 mx-auto mb-2" />
-              <h3 className="font-semibold text-primary-800">Players</h3>
+              <h3 className="font-semibold text-primary-800">Jogadores</h3>
               <p className="text-2xl font-bold text-primary-600">{currentRoom.players.length}</p>
             </div>
             
             <div className="bg-gradient-to-r from-secondary-50 to-secondary-100 p-6 rounded-xl text-center">
               <Star className="h-8 w-8 text-secondary-600 mx-auto mb-2" />
-              <h3 className="font-semibold text-secondary-800">Your Score</h3>
+              <h3 className="font-semibold text-secondary-800">Sua pontuação</h3>
               <p className="text-2xl font-bold text-secondary-600">{userScore}</p>
             </div>
             
             <div className="bg-gradient-to-r from-earth-50 to-earth-100 p-6 rounded-xl text-center">
               <Trophy className="h-8 w-8 text-earth-600 mx-auto mb-2" />
-              <h3 className="font-semibold text-earth-800">Your Rank</h3>
+              <h3 className="font-semibold text-earth-800">Seu Rank</h3>
               <p className="text-2xl font-bold text-earth-600">#{userRank}</p>
             </div>
           </div>
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={shareResults}
-              className="flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-secondary-500 to-secondary-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"
-            >
-              <Share2 className="h-5 w-5" />
-              <span>Share Results</span>
-            </button>
             
             <button
               onClick={() => window.location.reload()}
@@ -159,7 +139,7 @@ export const GameResults: React.FC = () => {
               className="flex items-center justify-center space-x-2 px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"
             >
               <Home className="h-5 w-5" />
-              <span>Back to Dashboard</span>
+              <span>De volta para o Dashboard</span>
             </button>
           </div>
         </div>
