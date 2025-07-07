@@ -78,11 +78,7 @@ export const Dashboard: React.FC = () => {
 
           <div className="mt-4 md:mt-0 flex items-center space-x-4">
             <div className="bg-gradient-nature p-4 rounded-full">
-              <Zap className="h-8 w-8 text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Sequência Atual</p>
-              <p className="text-2xl font-bold text-gray-900">5 dias</p>
+              <Zap className="h-10 w-10 text-white" />
             </div>
           </div>
         </div>
