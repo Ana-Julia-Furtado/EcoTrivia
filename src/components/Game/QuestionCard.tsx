@@ -307,4 +307,8 @@ export const QuestionCard: React.FC = () => {
       </div>
     </div>
   )
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 5fad0dc19fe8ae8427379b8696451e66625d4109
