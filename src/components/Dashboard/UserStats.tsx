@@ -22,7 +22,21 @@ export const UserStats: React.FC = () => {
     accuracy: 0
   });
   const [loading, setLoading] = useState(true);
-    const randomAccuracy = useMemo(() => getRandomNumber(60, 95), []);
+    const [accuracyValue, setAccuracyValue] = useState(0);
+
+    useEffect(() => {
+      const visitedBefore = localStorage.getItem("hasVisited");
+
+    if (!visitedBefore) {
+    // Primeira visita
+      setAccuracyValue(0);
+      localStorage.setItem("hasVisited", "true");
+    } else {
+    // Acessos seguintes: aplica a função
+      setAccuracyValue(getRandomNumber(60, 95));
+    }
+  }, []);
+
 
   useEffect(() => {
     const loadUserStats = async () => {
@@ -69,13 +83,14 @@ export const UserStats: React.FC = () => {
       color: 'from-secondary-500 to-secondary-700',
       change: null
     },
-    { 
-      icon: TrendingUp, 
-      label: 'Precisão', 
-      value: `${randomAccuracy}%`, 
-      color: 'from-earth-500 to-earth-700',
-      change: null
-    }
+{
+    icon: TrendingUp, 
+    label: 'Precisão', 
+    value: `${accuracyValue}%`, 
+    color: 'from-earth-500 to-earth-700',
+    change: null
+  }
+
   ];
 
   if (loading) {
