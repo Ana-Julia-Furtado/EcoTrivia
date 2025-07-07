@@ -131,7 +131,7 @@ export const GameResults: React.FC = () => {
               className="flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-nature text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"
             >
               <RotateCcw className="h-5 w-5" />
-              <span>Play Again</span>
+              <span>Jogar Novamente</span>
             </button>
             
             <button
