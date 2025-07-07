@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Trophy, Target, TrendingUp, Calendar, Clock, Award } from 'lucide-react';
 import { useGameStore } from '../../store/gameStore';
 import { database, GameDocument } from '../../services/database';
@@ -22,6 +22,7 @@ export const UserStats: React.FC = () => {
     accuracy: 0
   });
   const [loading, setLoading] = useState(true);
+    const randomAccuracy = useMemo(() => getRandomNumber(60, 95), []);
 
   useEffect(() => {
     const loadUserStats = async () => {
@@ -71,7 +72,7 @@ export const UserStats: React.FC = () => {
     { 
       icon: TrendingUp, 
       label: 'Precisão', 
-      value: getRandomNumber(60, 95) + '%', 
+      value: `${randomAccuracy}%`, 
       color: 'from-earth-500 to-earth-700',
       change: null
     }
