@@ -266,20 +266,7 @@ export const useGameStore = create<GameStore>()(
           const { currentRoom, gameSettings, availableRooms } = get();
           if (!currentRoom) return;
 
-          // Filter questions based on settings
-          let filteredQuestions = mockQuestions;
-          
-          if (gameSettings.difficulty !== 'mixed') {
-            filteredQuestions = filteredQuestions.filter(q => q.difficulty === gameSettings.difficulty);
-          }
-          
-          filteredQuestions = filteredQuestions.filter(q => 
-            gameSettings.categories.includes(q.category)
-          );
-
-          // Shuffle and select questions
-          const shuffled = filteredQuestions.sort(() => 0.5 - Math.random());
-          const selectedQuestions = shuffled.slice(0, gameSettings.questionsPerGame);
+          const selectedQuestions =mockQuestions.slice(0, gameSettings.questionsPerGame);
 
           const updatedRoom = {
             ...currentRoom,
@@ -371,17 +358,7 @@ export const useGameStore = create<GameStore>()(
             return;
           }
 
-          // Filter and get next question
-          let filteredQuestions = mockQuestions;
-          if (gameSettings.difficulty !== 'mixed') {
-            filteredQuestions = filteredQuestions.filter(q => q.difficulty === gameSettings.difficulty);
-          }
-          filteredQuestions = filteredQuestions.filter(q => 
-            gameSettings.categories.includes(q.category)
-          );
-
-          const shuffled = filteredQuestions.sort(() => 0.5 - Math.random());
-          const nextQuestion = shuffled[nextIndex % shuffled.length];
+          const nextQuestion = mockQuestions[nextIndex % mockQuestions.length];
 
           const updatedRoom = {
             ...currentRoom,
