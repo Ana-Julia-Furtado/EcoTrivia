@@ -37,9 +37,6 @@ export const GameLobby: React.FC = () => {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-2">{currentRoom.name}</h2>
-              <p className="text-gray-600">
-                {currentRoom.players.length}/{currentRoom.maxPlayers} players
-              </p>
             </div>
             
             <div className="flex space-x-3">
@@ -89,17 +86,7 @@ export const GameLobby: React.FC = () => {
               </div>
             ))}
             
-            {Array.from({ length: currentRoom.maxPlayers - currentRoom.players.length }).map((_, index) => (
-              <div
-                key={`empty-${index}`}
-                className="bg-gray-50 p-4 rounded-xl border-2 border-dashed border-gray-300 flex items-center justify-center"
-              >
-                <div className="text-center text-gray-400">
-                  <Users className="h-8 w-8 mx-auto mb-2" />
-                  <p className="text-sm">Waiting for player...</p>
-                </div>
-              </div>
-            ))}
+           
           </div>
 
           {!isRoomOwner && currentRoom.players.length < 1 && (
@@ -221,35 +208,15 @@ export const GameLobby: React.FC = () => {
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Max Players
-                </label>
-                <select
-                  value={maxPlayers}
-                  onChange={(e) => setMaxPlayers(Number(e.target.value))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                >
-                  <option value={1}>1 Players</option>
-                  <option value={2}>2 Players</option>
-                  <option value={4}>4 Players</option>
-                  <option value={6}>6 Players</option>
-                  <option value={8}>8 Players</option>
-                </select>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Jogadores
+              </label>
+              <div className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-700">
+                1 Jogador
               </div>
-              
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="private"
-                  checked={isPrivate}
-                  onChange={(e) => setIsPrivate(e.target.checked)}
-                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                />
-                <label htmlFor="private" className="ml-2 block text-sm text-gray-700">
-                  Private room (invite only)
-                </label>
-              </div>
+            </div>
+
               
               <div className="flex space-x-3 pt-4">
                 <button
