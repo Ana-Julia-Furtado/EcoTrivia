@@ -48,10 +48,6 @@ export const Header: React.FC = () => {
                   </div>
                 </div>
 
-                <button className="p-2 text-white hover:bg-white/10 rounded-full transition-colors">
-                  <Settings className="h-5 w-5" />
-                </button>
-
                 <button
                   onClick={logout}
                   className="p-2 text-white hover:bg-white/10 rounded-full transition-colors"
