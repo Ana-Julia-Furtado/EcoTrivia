@@ -45,6 +45,7 @@ interface GameStore {
   submitAnswer: (answerIndex: number, timeSpent: number) => void
   nextQuestion: () => void
   endGame: () => void
+  resetGameState: () => void
   setGameSettings: (settings: Partial<GameSettings>) => void
   setError: (error: string | null) => void
   setLoading: (loading: boolean) => void
@@ -321,8 +322,6 @@ export const useGameStore = create<GameStore>()(
               totalScore: 0,
             },
           })
-
-          // Save to localStorage and notify other tabs
           saveRoomsToStorage(updatedRooms)
         },
 
@@ -330,10 +329,7 @@ export const useGameStore = create<GameStore>()(
           const { currentRoom, gameSettings, availableRooms } = get()
           if (!currentRoom) return
 
-          // Get filtered and prepared questions for the entire game
           const gameQuestions = getFilteredQuestions(gameSettings)
-
-          // Ensure we have at least one question
           if (gameQuestions.length === 0) {
             set({ error: "Não foi possível encontrar perguntas para as configurações selecionadas." })
             return
@@ -348,7 +344,7 @@ export const useGameStore = create<GameStore>()(
 
           const updatedRooms = availableRooms.map((r) => (r.id === currentRoom.id ? updatedRoom : r))
 
-          // Initialize game session with the first question
+          // Inicialização com a primeira pergunta
           set({
             currentRoom: updatedRoom,
             currentGameQuestions: gameQuestions,
@@ -356,8 +352,49 @@ export const useGameStore = create<GameStore>()(
             playerAnswers: [],
             availableRooms: updatedRooms,
             error: null,
+            showResults: false,
             currentGameSession: {
               startTime: new Date(),
+              questionsAnswered: 0,
+              correctAnswers: 0,
+              totalScore: 0,
+            },
+          })
+          saveRoomsToStorage(updatedRooms)
+        },
+
+        resetGameState: () => {
+          const { currentRoom, availableRooms, gameSettings } = get()
+          if (!currentRoom) return
+
+          // Reset room scores to zero for all players
+          const resetScores: { [key: string]: number } = {}
+          currentRoom.players.forEach((player) => {
+            resetScores[player.id] = 0
+          })
+
+          // Reset the room state
+          const updatedRoom = {
+            ...currentRoom,
+            gameState: "waiting" as GameState,
+            questionIndex: 0,
+            timeRemaining: 0,
+            scores: resetScores,
+          }
+
+          const updatedRooms = availableRooms.map((r) => (r.id === currentRoom.id ? updatedRoom : r))
+
+          // Reset all game-related state
+          set({
+            currentRoom: updatedRoom,
+            availableRooms: updatedRooms,
+            currentQuestion: null,
+            currentGameQuestions: [],
+            playerAnswers: [],
+            showResults: false,
+            error: null,
+            currentGameSession: {
+              startTime: null,
               questionsAnswered: 0,
               correctAnswers: 0,
               totalScore: 0,
