@@ -1,52 +1,69 @@
-import React from 'react';
-import { Trophy, Medal, Star, Users, RotateCcw, Home, Share2 } from 'lucide-react';
-import { useGameStore } from '../../store/gameStore';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+"use client"
+
+import type React from "react"
+import { Trophy, Medal, Star, Users, RotateCcw, Home } from "lucide-react"
+import { useGameStore } from "../../store/gameStore"
+import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom"
 
 export const GameResults: React.FC = () => {
-  const { currentRoom, currentUser, leaveRoom } = useGameStore();
-  const navigate = useNavigate();
+  const { currentRoom, currentUser, leaveRoom, resetGameState, startGame } = useGameStore()
+  const navigate = useNavigate()
 
-  if (!currentRoom || !currentUser) return null;
+  if (!currentRoom || !currentUser) return null
 
   const sortedPlayers = currentRoom.players
-    .map(player => ({
+    .map((player) => ({
       ...player,
-      score: currentRoom.scores[player.id] || 0
+      score: currentRoom.scores[player.id] || 0,
     }))
-    .sort((a, b) => b.score - a.score);
+    .sort((a, b) => b.score - a.score)
 
-  const userRank = sortedPlayers.findIndex(p => p.id === currentUser.id) + 1;
-  const userScore = currentRoom.scores[currentUser.id] || 0;
+  const userRank = sortedPlayers.findIndex((p) => p.id === currentUser.id) + 1
+  const userScore = currentRoom.scores[currentUser.id] || 0
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
-      case 1: return <Trophy className="h-8 w-8 text-yellow-500" />;
-      case 2: return <Medal className="h-8 w-8 text-gray-400" />;
-      case 3: return <Medal className="h-8 w-8 text-amber-600" />;
-      default: return <Star className="h-8 w-8 text-gray-300" />;
+      case 1:
+        return <Trophy className="h-8 w-8 text-yellow-500" />
+      case 2:
+        return <Medal className="h-8 w-8 text-gray-400" />
+      case 3:
+        return <Medal className="h-8 w-8 text-amber-600" />
+      default:
+        return <Star className="h-8 w-8 text-gray-300" />
     }
-  };
+  }
 
   const getRankColor = (rank: number) => {
     switch (rank) {
-      case 1: return 'from-yellow-400 to-yellow-600';
-      case 2: return 'from-gray-300 to-gray-500';
-      case 3: return 'from-amber-500 to-amber-700';
-      default: return 'from-gray-200 to-gray-400';
+      case 1:
+        return "from-yellow-400 to-yellow-600"
+      case 2:
+        return "from-gray-300 to-gray-500"
+      case 3:
+        return "from-amber-500 to-amber-700"
+      default:
+        return "from-gray-200 to-gray-400"
     }
-  };
-
+  }
 
   const handleBackToDashboard = () => {
-    leaveRoom();
-    navigate('/');
-  };
+    leaveRoom()
+    navigate("/")
+  }
+
+  const handleBackToGame = () => {
+    // Reset complete game state before starting new game
+    resetGameState()
+    // Start a new game with fresh state
+    startGame()
+    navigate("/game")
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-2xl shadow-2xl overflow-hidden"
@@ -70,7 +87,7 @@ export const GameResults: React.FC = () => {
         {/* Results */}
         <div className="p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Ranking final</h2>
-          
+
           <div className="space-y-4 mb-8">
             {sortedPlayers.map((player, index) => (
               <motion.div
@@ -79,13 +96,13 @@ export const GameResults: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
                 className={`flex items-center justify-between p-6 rounded-xl border-2 ${
-                  player.id === currentUser.id 
-                    ? 'border-primary-500 bg-primary-50' 
-                    : 'border-gray-200 bg-gray-50'
+                  player.id === currentUser.id ? "border-primary-500 bg-primary-50" : "border-gray-200 bg-gray-50"
                 }`}
               >
                 <div className="flex items-center space-x-4">
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${getRankColor(index + 1)} flex items-center justify-center text-white font-bold`}>
+                  <div
+                    className={`w-12 h-12 rounded-full bg-gradient-to-r ${getRankColor(index + 1)} flex items-center justify-center text-white font-bold`}
+                  >
                     {index + 1}
                   </div>
                   <div>
@@ -93,7 +110,7 @@ export const GameResults: React.FC = () => {
                     <p className="text-gray-600">Level {player.level}</p>
                   </div>
                 </div>
-                
+
                 <div className="text-right">
                   <p className="text-2xl font-bold text-gray-900">{player.score}</p>
                   <p className="text-sm text-gray-600">pontos</p>
@@ -109,13 +126,13 @@ export const GameResults: React.FC = () => {
               <h3 className="font-semibold text-primary-800">Jogadores</h3>
               <p className="text-2xl font-bold text-primary-600">{currentRoom.players.length}</p>
             </div>
-            
+
             <div className="bg-gradient-to-r from-secondary-50 to-secondary-100 p-6 rounded-xl text-center">
               <Star className="h-8 w-8 text-secondary-600 mx-auto mb-2" />
               <h3 className="font-semibold text-secondary-800">Sua pontuação</h3>
               <p className="text-2xl font-bold text-secondary-600">{userScore}</p>
             </div>
-            
+
             <div className="bg-gradient-to-r from-earth-50 to-earth-100 p-6 rounded-xl text-center">
               <Trophy className="h-8 w-8 text-earth-600 mx-auto mb-2" />
               <h3 className="font-semibold text-earth-800">Seu Rank</h3>
@@ -125,15 +142,14 @@ export const GameResults: React.FC = () => {
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            
             <button
-              onClick={() => window.location.reload()}
+              onClick={handleBackToGame}
               className="flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-nature text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"
             >
               <RotateCcw className="h-5 w-5" />
               <span>Jogar Novamente</span>
             </button>
-            
+
             <button
               onClick={handleBackToDashboard}
               className="flex items-center justify-center space-x-2 px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"
@@ -145,5 +161,5 @@ export const GameResults: React.FC = () => {
         </div>
       </motion.div>
     </div>
-  );
-};
+  )
+}
