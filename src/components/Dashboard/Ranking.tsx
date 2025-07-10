@@ -11,7 +11,7 @@ interface RankingProps {
 }
 
 export const Ranking: React.FC<RankingProps> = ({ 
-  limit = 10, 
+  limit = 20, 
   showCurrentUser = true 
 }) => {
   const { currentUser } = useGameStore();
