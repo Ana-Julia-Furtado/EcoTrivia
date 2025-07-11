@@ -525,5 +525,505 @@ export const mockQuestions: Question[] = [
     category: 'poluicao_plastica', 
     explanation: 'Microplásticos são minúsculos pedaços de plástico que representam uma crescente preocupação ambiental, pois são ingeridos por animais e entram na cadeia alimentar.',
     points: 200
+  },
+  {
+    id: '51',
+    question: 'Qual é uma das principais causas da expansão urbana desordenada?',
+    options: ['Aumento da tecnologia nas zonas rurais', 'Declínio da oferta de trabalho na agricultura', 'Aumento de florestas urbanas', 'Proibição do transporte público'],
+    correctAnswer: 1,
+    difficulty: 'easy',
+    category: 'urbanizacao',
+    explanation: 'A migração para áreas urbanas é impulsionada por fatores como a pobreza nas zonas rurais e a diminuição de empregos agrícolas.',
+    points: 100
+  },
+  {
+    id: '52',
+    question: 'O que representa a pegada ecológica?',
+    options: ['Quantidade de energia elétrica consumida por pessoa', 'Número de automóveis em uma cidade', 'Medição do uso de recursos naturais por pessoa', 'Índice de qualidade da água'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'sustentabilidade',
+    explanation: 'A pegada ecológica mede a quantidade de recursos naturais usados para sustentar um estilo de vida.',
+    points: 200
+  },
+  {
+    id: '53',
+    question: 'Qual categoria de transporte urbano é mais eficiente em termos energéticos?',
+    options: ['Automóveis particulares', 'Motocicletas', 'Trens de transporte coletivo', 'Aviões'],
+    correctAnswer: 2,
+    difficulty: 'easy',
+    category: 'urbanizacao',
+    explanation: 'Trens consomem menos energia, ocupam menos espaço urbano e reduzem congestionamentos e poluição.',
+    points: 100
+  },
+  {
+    id: '54',
+    question: 'Qual é uma das consequências sociais negativas da urbanização desordenada?',
+    options: ['Diminuição da população rural', 'Redução de áreas de lazer', 'Aumento do desemprego e da desigualdade', 'Melhoria na coleta seletiva'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'urbanizacao',
+    explanation: 'O crescimento urbano desorganizado leva à concentração de pobreza e exclusão social em centros urbanos.',
+    points: 200
+  },
+  {
+    id: '55',
+    question: 'Qual é o principal objetivo da Análise do Ciclo de Vida (ACV)?',
+    options: ['Reduzir o custo de produção', 'Controlar e reduzir impactos ambientais de um produto', 'Aumentar a durabilidade dos produtos', 'Melhorar a aparência estética dos produtos'],
+    correctAnswer: 1,
+    difficulty: 'medium',
+    category: 'consumo',
+    explanation: 'A ACV visa mapear e reduzir os impactos ambientais durante todas as fases da vida de um produto.',
+    points: 200
+  },
+  {
+    id: '56',
+    question: 'O que caracteriza uma fonte de energia renovável?',
+    options: ['Recurso que pode se regenerar em escala humana', 'Fonte que exige uso de petróleo', 'Recurso que causa grande impacto ambiental', 'Energia gerada por combustíveis fósseis'],
+    correctAnswer: 0,
+    difficulty: 'easy',
+    category: 'energias_renovaveis',
+    explanation: 'Fontes renováveis se regeneram naturalmente em curto prazo, como a energia solar e eólica.',
+    points: 100
+  },
+  {
+    id: '57',
+    question: 'Por que o uso de sacolas plásticas é considerado problemático para o meio ambiente?',
+    options: ['Porque são biodegradáveis', 'Porque são recicláveis', 'Porque são de uso único e causam poluição', 'Porque substituem as de papel'],
+    correctAnswer: 2,
+    difficulty: 'easy',
+    category: 'poluicao_plastica',
+    explanation: 'Sacolas plásticas são de uso único e geram resíduos duradouros no ambiente.',
+    points: 100
+  },
+  {
+    id: '58',
+    question: 'Segundo a Lei 11.445/07, o que compõe o saneamento básico?',
+    options: ['Apenas abastecimento de água e esgoto', 'Limpeza urbana e coleta de lixo', 'Água, esgoto, resíduos e drenagem urbana', 'Serviços de iluminação pública'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'sustentabilidade',
+    explanation: 'O saneamento básico inclui abastecimento de água, esgotamento sanitário, limpeza urbana, manejo de resíduos e drenagem pluvial.',
+    points: 200
+  },
+  {
+    id: '59',
+    question: 'Qual é o impacto da urbanização na biodiversidade?',
+    options: ['Proteção da fauna silvestre', 'Fragmentação de habitats e morte de animais em estradas', 'Aumento da vegetação', 'Melhoria da qualidade do ar'],
+    correctAnswer: 1,
+    difficulty: 'medium',
+    category: 'biodiversidade',
+    explanation: 'A expansão urbana desorganizada destrói habitats naturais e aumenta os riscos para a fauna.',
+    points: 200
+  },
+  {
+    id: '60',
+    question: 'Qual alternativa abaixo representa um princípio da Política Nacional de Resíduos Sólidos?',
+    options: ['Descarte direto em rios', 'Queima de resíduos ao ar livre', 'Responsabilidade compartilhada pelo ciclo de vida dos produtos', 'Uso exclusivo de lixões'],
+    correctAnswer: 2,
+    difficulty: 'hard',
+    category: 'politica_ambiental',
+    explanation: 'A política adota o princípio da responsabilidade compartilhada para garantir que todos os envolvidos cuidem adequadamente dos resíduos.',
+    points: 300
+  },
+  {
+  id: '61',
+  question: 'Qual tipo de resíduo é classificado como Classe I segundo a legislação brasileira?',
+  options: ['Resíduos orgânicos', 'Resíduos recicláveis', 'Resíduos perigosos', 'Resíduos de construção civil'],
+  correctAnswer: 2,
+  difficulty: 'medium',
+  category: 'residuos',
+  explanation: 'Classe I inclui resíduos que oferecem riscos à saúde pública e ao meio ambiente, como os químicos e infectantes.',
+  points: 200
+  },
+  {
+    id: '62',
+    question: 'O que são fontes pontuais de poluição da água?',
+    options: ['Fontes que não podem ser rastreadas', 'Poluição causada por escoamento de chuva', 'Fontes específicas como canos de esgoto', 'Fontes subterrâneas de água contaminada'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'poluicao_da_agua',
+    explanation: 'Fontes pontuais são locais identificáveis de despejo de poluentes, como dutos industriais.',
+    points: 200
+  },
+  {
+    id: '63',
+    question: 'Qual material reciclável deve ser descartado na lixeira vermelha, segundo a CONAMA?',
+    options: ['Vidro', 'Papel', 'Metal', 'Plástico'],
+    correctAnswer: 3,
+    difficulty: 'easy',
+    category: 'reciclagem',
+    explanation: 'A cor vermelha é usada para a coleta seletiva de plásticos, conforme a Resolução CONAMA nº 275.',
+    points: 100
+  },
+  {
+    id: '64',
+    question: 'O que é o conceito "do berço ao berço" no ecodesign?',
+    options: ['Produção sem resíduos', 'Produção com foco na durabilidade', 'Sistema circular onde não existe lixo', 'Produção exclusiva de materiais biodegradáveis'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'consumo',
+    explanation: 'O conceito “Cradle to Cradle” foca em produtos que voltam ao ciclo produtivo, eliminando o conceito de lixo.',
+    points: 200
+  },
+  {
+    id: '65',
+    question: 'O que diferencia os polímeros termofixos dos termoplásticos?',
+    options: ['Podem ser reciclados após moldagem', 'São flexíveis e transparentes', 'Não podem ser remodelados após endurecimento', 'São usados apenas em embalagens'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'residuos',
+    explanation: 'Termofixos não podem ser remoldados após endurecimento, ao contrário dos termoplásticos.',
+    points: 200
+  },
+  {
+    id: '66',
+    question: 'Qual das ações abaixo mais contribui para a redução da pegada hídrica individual?',
+    options: ['Aumentar o uso de roupas novas', 'Consumir carne diariamente', 'Consumir alimentos locais e sazonais', 'Tomar banhos mais longos'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'consumo',
+    explanation: 'Alimentos locais reduzem o uso indireto de água, diminuindo a pegada hídrica.',
+    points: 200
+  },
+  {
+    id: '67',
+    question: 'Qual foi o impacto do desvio de água para irrigação no Mar de Aral?',
+    options: ['Aumento da biodiversidade', 'Expansão agrícola sustentável', 'Redução de 83% do volume da área superficial', 'Melhoria do clima na Ásia Central'],
+    correctAnswer: 2,
+    difficulty: 'hard',
+    category: 'recursos_hidricos',
+    explanation: 'O desvio de água causou a quase extinção do Mar de Aral, um dos piores desastres ambientais do século XX.',
+    points: 300
+  },
+  {
+    id: '68',
+    question: 'O que é considerado consumo indireto de água?',
+    options: ['Beber água', 'Tomar banho', 'Lavar roupas', 'Produzir alimentos e roupas'],
+    correctAnswer: 3,
+    difficulty: 'medium',
+    category: 'recursos_hidricos',
+    explanation: 'O consumo indireto de água está relacionado à produção de bens como carne, roupas e eletrônicos.',
+    points: 200
+  },
+  {
+    id: '69',
+    question: 'O que a Agenda 2030 propõe em relação à água?',
+    options: ['Privatização dos recursos hídricos', 'Uso exclusivo de águas subterrâneas', 'Acesso universal à água potável e saneamento', 'Aumento do uso de água engarrafada'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'politica_ambiental',
+    explanation: 'A Agenda 2030 defende acesso equitativo à água potável e saneamento básico como um direito humano.',
+    points: 200
+  },
+  {
+    id: '70',
+    question: 'Por que a energia hidrelétrica é amplamente utilizada no Brasil?',
+    options: ['Baixo rendimento energético', 'Fácil construção de barragens', 'Grande disponibilidade hídrica e alto rendimento', 'Não possui impactos ambientais'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'energias_renovaveis',
+    explanation: 'O Brasil tem grandes reservas de água e a energia hidrelétrica tem rendimento alto (96%), tornando-a economicamente viável.',
+    points: 200
+  },
+  {
+    id: '71',
+    question: 'Qual medida urbana ajuda a mitigar enchentes e alagamentos?',
+    options: ['Construção de grandes estacionamentos', 'Remoção de áreas verdes', 'Implantação de sistemas de drenagem urbana eficientes', 'Aumento de vias asfaltadas'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'urbanizacao',
+    explanation: 'A drenagem urbana adequada evita acúmulo de água das chuvas, mitigando enchentes.',
+    points: 200
+  },
+  {
+    id: '72',
+    question: 'O que define um resíduo como "infectante" na classificação da saúde?',
+    options: ['Material com metais pesados', 'Resíduo com risco biológico de infecção', 'Objeto perfurante', 'Produto reciclável contaminado'],
+    correctAnswer: 1,
+    difficulty: 'medium',
+    category: 'residuos',
+    explanation: 'Resíduos infectantes são os que possuem agentes biológicos com potencial de causar infecção.',
+    points: 200
+  },
+  {
+    id: '73',
+    question: 'Qual dos seguintes gases não é considerado gás de efeito estufa?',
+    options: ['CO₂', 'CH₄', 'N₂', 'N₂O'],
+    correctAnswer: 2,
+    difficulty: 'easy',
+    category: 'atmosfera',
+    explanation: 'O nitrogênio (N₂), embora seja o gás mais abundante na atmosfera, não é um gás de efeito estufa.',
+    points: 100
+  },
+  {
+    id: '74',
+    question: 'Qual categoria de resíduos é composta por materiais recicláveis e não recicláveis que não apresentam riscos?',
+    options: ['Grupo A', 'Grupo B', 'Grupo C', 'Grupo D'],
+    correctAnswer: 3,
+    difficulty: 'medium',
+    category: 'residuos',
+    explanation: 'Grupo D engloba resíduos comuns sem risco biológico, químico ou radiológico, como papel e plástico.',
+    points: 200
+  },
+  {
+    id: '75',
+    question: 'O que representa o conceito de "não geração" na gestão de resíduos?',
+    options: ['A reciclagem total dos resíduos', 'A queima de resíduos perigosos', 'Evitar ao máximo a produção de resíduos desde a origem', 'Descarte em lixões com tratamento posterior'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'residuos',
+    explanation: 'Não geração é a primeira e mais desejável etapa da hierarquia de resíduos, focada em evitar sua criação.',
+    points: 200
+  },
+  {
+    id: '76',
+    question: 'Qual é a unidade usada para medir a pegada ecológica?',
+    options: ['m³/ano', 'kg CO₂/dia', 'gha/pessoa/ano', 'Watt/hora'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'sustentabilidade',
+    explanation: 'A unidade gha/pessoa/ano representa hectares globais utilizados por pessoa a cada ano.',
+    points: 200
+  },
+  {
+    id: '77',
+    question: 'Qual das opções é uma desvantagem da energia solar?',
+    options: ['Alto impacto ambiental', 'Baixa durabilidade das placas', 'Necessidade de baterias para armazenar energia', 'Geração contínua mesmo à noite'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'energias_renovaveis',
+    explanation: 'A energia solar exige sistemas de armazenamento como baterias, já que não gera energia à noite.',
+    points: 200
+  },
+  {
+    id: '78',
+    question: 'Qual fator torna a energia eólica uma fonte atraente?',
+    options: ['Alta emissão de poluentes', 'Custo elevado de operação', 'Alta disponibilidade e baixo impacto ambiental', 'Necessidade de rios para geração'],
+    correctAnswer: 2,
+    difficulty: 'easy',
+    category: 'energias_renovaveis',
+    explanation: 'A energia eólica é limpa, abundante e pode ser usada em diversos locais com vento adequado.',
+    points: 100
+  },
+  {
+    id: '79',
+    question: 'Qual é a principal preocupação com os resíduos radioativos da energia nuclear?',
+    options: ['Baixa toxicidade', 'Curto tempo de decomposição', 'Fácil incineração', 'Ausência de solução segura para armazenamento a longo prazo'],
+    correctAnswer: 3,
+    difficulty: 'hard',
+    category: 'energia',
+    explanation: 'Resíduos radioativos exigem armazenamento seguro por milhares de anos, sem soluções definitivas.',
+    points: 300
+  },
+  {
+    id: '80',
+    question: 'Qual é o impacto do uso excessivo de veículos individuais nas cidades?',
+    options: ['Redução do tempo de deslocamento', 'Aumento da biodiversidade urbana', 'Menor emissão de CO₂', 'Congestionamentos e aumento da poluição'],
+    correctAnswer: 3,
+    difficulty: 'easy',
+    category: 'urbanizacao',
+    explanation: 'O uso massivo de automóveis causa congestionamentos, poluição do ar e maior emissão de gases de efeito estufa.',
+    points: 100
+  },
+  {
+    id: '81',
+    question: 'Qual é a principal vantagem do transporte coletivo sobre o individual?',
+    options: ['Maior consumo de combustível', 'Menor eficiência energética', 'Menos poluição e uso de espaço urbano', 'Maior índice de acidentes'],
+    correctAnswer: 2,
+    difficulty: 'easy',
+    category: 'urbanizacao',
+    explanation: 'Transporte coletivo é mais eficiente, gera menos poluição e reduz a necessidade de espaço urbano para veículos.',
+    points: 100
+  },
+  {
+    id: '82',
+    question: 'O que caracteriza os resíduos do Grupo E?',
+    options: ['São recicláveis', 'Contêm substâncias químicas', 'Podem perfurar ou cortar', 'São resíduos líquidos'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'residuos',
+    explanation: 'Grupo E inclui materiais perfurocortantes, como agulhas e lâminas, com potencial risco físico.',
+    points: 200
+  },
+  {
+    id: '83',
+    question: 'O que define os polímeros como plásticos termoplásticos?',
+    options: ['São biodegradáveis', 'Podem ser moldados várias vezes com calor', 'São sempre transparentes', 'São usados apenas em brinquedos'],
+    correctAnswer: 1,
+    difficulty: 'medium',
+    category: 'residuos',
+    explanation: 'Termoplásticos podem ser fundidos e remoldados diversas vezes, ao contrário dos termofixos.',
+    points: 200
+  },
+  {
+    id: '84',
+    question: 'Por que o gás hidrogênio é considerado uma alternativa promissora aos combustíveis fósseis?',
+    options: ['Produz CO₂ em abundância', 'Exige grandes usinas', 'Pode gerar vapor de água como único resíduo', 'Tem baixa eficiência energética'],
+    correctAnswer: 2,
+    difficulty: 'hard',
+    category: 'energia',
+    explanation: 'Quando usado corretamente, o hidrogênio gera apenas vapor de água, sendo uma fonte limpa e promissora.',
+    points: 300
+  },
+  {
+    id: '85',
+    question: 'O que caracteriza um aterro sanitário?',
+    options: ['Descarte sem tratamento', 'Área improvisada para lixo', 'Local com estrutura segura para resíduos sólidos', 'Incinerador a céu aberto'],
+    correctAnswer: 2,
+    difficulty: 'easy',
+    category: 'residuos',
+    explanation: 'Aterros sanitários possuem sistemas de impermeabilização e controle de chorume e gases.',
+    points: 100
+  },
+  {
+    id: '86',
+    question: 'Qual é o principal objetivo do Ecodesign?',
+    options: ['Reduzir o preço de produtos', 'Maximizar o uso de materiais não recicláveis', 'Minimizar os impactos ambientais durante todo o ciclo de vida do produto', 'Eliminar etapas de produção'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'consumo',
+    explanation: 'O Ecodesign visa criar produtos com menor impacto ambiental desde a origem até o descarte.',
+    points: 200
+  },
+  {
+    id: '87',
+    question: 'Por que o polietileno verde é considerado mais sustentável?',
+    options: ['É feito de vidro reciclado', 'É produzido a partir de petróleo', 'É derivado da cana-de-açúcar e reduz emissões de CO₂', 'É composto de metais pesados'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'reciclagem',
+    explanation: 'O polietileno verde é produzido a partir de fonte renovável e reduz a pegada de carbono em comparação ao plástico fóssil.',
+    points: 200
+  },
+  {
+    id: '88',
+    question: 'Qual das ações abaixo mais contribui para a redução de resíduos em casa?',
+    options: ['Comprar alimentos embalados', 'Usar produtos descartáveis', 'Separar recicláveis e fazer compostagem', 'Utilizar sacolas plásticas'],
+    correctAnswer: 2,
+    difficulty: 'easy',
+    category: 'residuos',
+    explanation: 'A separação correta e o reaproveitamento orgânico via compostagem reduzem significativamente a geração de lixo.',
+    points: 100
+  },
+  {
+    id: '89',
+    question: 'O que é "energia geotérmica"?',
+    options: ['Energia solar concentrada no solo', 'Energia obtida do calor da Terra', 'Energia eólica subterrânea', 'Energia química das rochas'],
+    correctAnswer: 1,
+    difficulty: 'medium',
+    category: 'energias_renovaveis',
+    explanation: 'A energia geotérmica é gerada pelo calor do interior da Terra, utilizada em regiões com atividade térmica intensa.',
+    points: 200
+  },
+  {
+    id: '90',
+    question: 'Qual impacto negativo está associado à energia hidrelétrica?',
+    options: ['Emissão intensa de CO₂', 'Baixa eficiência energética', 'Altos níveis de radiação', 'Destruição de ecossistemas durante a construção dos reservatórios'],
+    correctAnswer: 3,
+    difficulty: 'medium',
+    category: 'energia',
+    explanation: 'A construção de usinas hidrelétricas pode inundar áreas extensas e prejudicar ecossistemas locais.',
+    points: 200
+  },
+  {
+    id: '91',
+    question: 'Qual é a cor do coletor seletivo indicado para resíduos de vidro?',
+    options: ['Amarelo', 'Verde', 'Azul', 'Vermelho'],
+    correctAnswer: 1,
+    difficulty: 'easy',
+    category: 'reciclagem',
+    explanation: 'Segundo o sistema de coleta seletiva, a cor verde é destinada ao vidro.',
+    points: 100
+  },
+  {
+    id: '92',
+    question: 'O que é logística reversa?',
+    options: ['Descarte direto em aterros', 'Transporte de resíduos perigosos', 'Retorno de produtos e embalagens ao fabricante para reaproveitamento ou descarte adequado', 'Exportação de resíduos'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'residuos',
+    explanation: 'A logística reversa responsabiliza fabricantes e comerciantes pela destinação correta dos resíduos gerados pelos seus produtos.',
+    points: 200
+  },
+  {
+    id: '93',
+    question: 'Qual prática agrícola contribui para o aumento da erosão do solo?',
+    options: ['Plantio direto', 'Agrofloresta', 'Monocultura sem rotação', 'Compostagem'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'solo',
+    explanation: 'A monocultura contínua, sem técnicas conservacionistas, empobrece o solo e acelera sua degradação.',
+    points: 200
+  },
+  {
+    id: '94',
+    question: 'Qual o papel dos biocombustíveis na matriz energética sustentável?',
+    options: ['Aumentam a dependência de petróleo', 'Reduzem as emissões de gases poluentes', 'Têm maior emissão de CO₂ que o carvão', 'São derivados de resíduos nucleares'],
+    correctAnswer: 1,
+    difficulty: 'medium',
+    category: 'energias_renovaveis',
+    explanation: 'Biocombustíveis como etanol e biodiesel são alternativas mais limpas e renováveis aos combustíveis fósseis.',
+    points: 200
+  },
+  {
+    id: '95',
+    question: 'O que é um produto “biodegradável”?',
+    options: ['É reciclável', 'Decompõe-se por processos biológicos naturais', 'É feito de vidro', 'É incinerado facilmente'],
+    correctAnswer: 1,
+    difficulty: 'easy',
+    category: 'residuos',
+    explanation: 'Produtos biodegradáveis são quebrados por microrganismos em substâncias simples e inofensivas.',
+    points: 100
+  },
+  {
+    id: '96',
+    question: 'Qual é a principal finalidade da coleta seletiva?',
+    options: ['Aumentar a quantidade de lixo acumulado', 'Facilitar a compostagem', 'Separar materiais recicláveis para reaproveitamento', 'Reduzir a necessidade de energia elétrica'],
+    correctAnswer: 2,
+    difficulty: 'easy',
+    category: 'reciclagem',
+    explanation: 'A coleta seletiva visa separar resíduos recicláveis dos orgânicos e rejeitos, otimizando o reaproveitamento.',
+    points: 100
+  },
+  {
+    id: '97',
+    question: 'O que diferencia o lixão do aterro sanitário?',
+    options: ['O lixão é mais moderno', 'O lixão trata os resíduos antes do descarte', 'O aterro é planejado e impermeabilizado, o lixão é irregular e poluente', 'Ambos têm a mesma estrutura'],
+    correctAnswer: 2,
+    difficulty: 'easy',
+    category: 'residuos',
+    explanation: 'Lixões são áreas irregulares, sem controle ambiental; aterros seguem critérios técnicos e ambientais.',
+    points: 100
+  },
+  {
+    id: '98',
+    question: 'Qual das ações abaixo representa consumo consciente?',
+    options: ['Comprar por impulso', 'Adquirir produtos locais e duráveis', 'Usar embalagens descartáveis sempre', 'Ignorar a origem dos produtos'],
+    correctAnswer: 1,
+    difficulty: 'medium',
+    category: 'consumo',
+    explanation: 'O consumo consciente envolve escolhas que consideram o impacto ambiental, social e econômico.',
+    points: 200
+  },
+  {
+    id: '99',
+    question: 'O que caracteriza uma cidade sustentável?',
+    options: ['Alta emissão de CO₂', 'Políticas públicas voltadas à inclusão social, mobilidade e preservação ambiental', 'Desenvolvimento sem planejamento urbano', 'Uso exclusivo de veículos motorizados'],
+    correctAnswer: 1,
+    difficulty: 'hard',
+    category: 'sustentabilidade',
+    explanation: 'Cidades sustentáveis priorizam a qualidade de vida, uso racional dos recursos e inclusão social.',
+    points: 300
+  },
+  {
+    id: '100',
+    question: 'Qual dos seguintes materiais NÃO é reciclável?',
+    options: ['Papelão', 'Vidro', 'Espelho', 'Lata de alumínio'],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    category: 'reciclagem',
+    explanation: 'Espelhos contêm revestimentos e metais que dificultam sua reciclagem convencional.',
+    points: 200
   }
-];
+    ];
