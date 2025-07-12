@@ -1,6 +1,3 @@
-// MongoDB-like database service using IndexedDB for persistent storage
-// This can be easily replaced with actual MongoDB API calls
-
 interface UserDocument {
   _id: string;
   name: string;
@@ -42,16 +39,12 @@ class MongoLikeDatabase {
 
       request.onupgradeneeded = (event) => {
         const db = (event.target as IDBOpenDBRequest).result;
-
-        // Create users collection
         if (!db.objectStoreNames.contains('users')) {
           const userStore = db.createObjectStore('users', { keyPath: '_id' });
           userStore.createIndex('ra', 'ra', { unique: true });
           userStore.createIndex('email', 'email', { unique: true });
           userStore.createIndex('totalScore', 'totalScore', { unique: false });
         }
-
-        // Create games collection
         if (!db.objectStoreNames.contains('games')) {
           const gameStore = db.createObjectStore('games', { keyPath: '_id' });
           gameStore.createIndex('userId', 'userId', { unique: false });
@@ -61,14 +54,12 @@ class MongoLikeDatabase {
       };
     });
   }
-
-  // User operations
   async createUser(userData: Omit<UserDocument, '_id' | 'createdAt' | 'updatedAt'>): Promise<UserDocument> {
     if (!this.db) throw new Error('Database not initialized');
 
     const user: UserDocument = {
       ...userData,
-      _id: userData.ra, // Use RA as unique ID
+      _id: userData.ra, 
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -137,8 +128,6 @@ class MongoLikeDatabase {
       .sort((a, b) => b.totalScore - a.totalScore)
       .slice(0, limit);
   }
-
-  // Game operations
   async saveGame(gameData: Omit<GameDocument, '_id'>): Promise<GameDocument> {
     if (!this.db) throw new Error('Database not initialized');
 
@@ -212,11 +201,6 @@ class MongoLikeDatabase {
     };
   }
 }
-
-// Singleton instance
 export const database = new MongoLikeDatabase();
-
-// Initialize database when module loads
 database.init().catch(console.error);
-
 export type { UserDocument, GameDocument };
