@@ -6,24 +6,37 @@ import { firebaseAuth } from "../services/firebaseAuth"
 import { database } from "../services/database"
 
 interface GameStore {
+  // User state
   currentUser: User | null
   isAuthenticated: boolean
+
+  // Game state
   currentRoom: GameRoom | null
   availableRooms: GameRoom[]
   currentQuestion: Question | null
   playerAnswers: PlayerAnswer[]
   gameSettings: GameSettings
+
+  // Game session questions - store filtered questions for the entire game
   currentGameQuestions: Question[]
+
+  // Online users
   onlineUsers: User[]
+
+  // UI state
   isLoading: boolean
   error: string | null
   showResults: boolean
+
+  // Game session tracking
   currentGameSession: {
     startTime: Date | null
     questionsAnswered: number
     correctAnswers: number
     totalScore: number
   }
+
+  // Actions
   setUser: (user: User) => void
   logout: () => void
   createRoom: (roomName: string, maxPlayers: number, isPrivate: boolean) => void
@@ -70,25 +83,40 @@ const defaultGameSettings: GameSettings = {
     "energias_renovaveis",
   ],
 }
+
+// Helper function to filter and prepare questions
 const getFilteredQuestions = (gameSettings: GameSettings): Question[] => {
   let filteredQuestions = [...mockQuestions]
+
+  // Filter by difficulty if not mixed
   if (gameSettings.difficulty !== "mixed") {
     filteredQuestions = filteredQuestions.filter((q) => q.difficulty === gameSettings.difficulty)
   }
+
+  // Filter by categories
   if (gameSettings.categories.length > 0) {
     filteredQuestions = filteredQuestions.filter((q) => gameSettings.categories.includes(q.category))
   }
+
+  // Fallback: if no questions match the criteria, use all questions
   if (filteredQuestions.length === 0) {
     console.warn("No questions match the current settings, using all questions as fallback")
     filteredQuestions = [...mockQuestions]
   }
+
+  // Shuffle questions
   const shuffled = filteredQuestions.sort(() => 0.5 - Math.random())
+
+  // Return the required number of questions, cycling through if needed
   const selectedQuestions: Question[] = []
   for (let i = 0; i < gameSettings.questionsPerGame; i++) {
     selectedQuestions.push(shuffled[i % shuffled.length])
   }
+
   return selectedQuestions
 }
+
+// Mock online users for demonstration
 const generateMockOnlineUsers = (): User[] => {
   const mockUsers = [
     { id: "158435", name: "Ana Júlia Furtado", level: 10, totalScore: 0, gamesPlayed: 8, correctAnswers: 45 },
@@ -104,10 +132,13 @@ const generateMockOnlineUsers = (): User[] => {
     },
   ]
 
+  // Randomly select 3-6 users to be "online"
   const shuffled = mockUsers.sort(() => 0.5 - Math.random())
   const onlineCount = Math.floor(Math.random() * 4) + 3 // 3-6 users
   return shuffled.slice(0, onlineCount)
 }
+
+// Cross-tab synchronization utilities
 const STORAGE_KEYS = {
   ROOMS: "ecotrivia-rooms",
   ONLINE_USERS: "ecotrivia-online-users",
@@ -116,6 +147,7 @@ const STORAGE_KEYS = {
 
 const saveRoomsToStorage = (rooms: GameRoom[]) => {
   localStorage.setItem(STORAGE_KEYS.ROOMS, JSON.stringify(rooms))
+  // Trigger storage event for other tabs
   window.dispatchEvent(
     new StorageEvent("storage", {
       key: STORAGE_KEYS.ROOM_UPDATE,
@@ -150,6 +182,7 @@ export const useGameStore = create<GameStore>()(
   subscribeWithSelector(
     persist(
       (set, get) => ({
+        // Initial state
         currentUser: null,
         isAuthenticated: false,
         currentRoom: null,
@@ -169,8 +202,10 @@ export const useGameStore = create<GameStore>()(
           totalScore: 0,
         },
 
+        // Actions
         setUser: (user) => {
           set({ currentUser: user, isAuthenticated: true })
+          // Add current user to online users if not already there
           const { onlineUsers } = get()
           if (!onlineUsers.find((u) => u.id === user.id)) {
             const updatedUsers = [...onlineUsers, user]
@@ -225,6 +260,8 @@ export const useGameStore = create<GameStore>()(
             currentRoom: newRoom,
             availableRooms: updatedRooms,
           })
+
+          // Save to localStorage and notify other tabs
           saveRoomsToStorage(updatedRooms)
         },
 
@@ -247,12 +284,16 @@ export const useGameStore = create<GameStore>()(
             currentRoom: updatedRoom,
             availableRooms: updatedRooms,
           })
+
+          // Save to localStorage and notify other tabs
           saveRoomsToStorage(updatedRooms)
         },
 
         leaveRoom: () => {
           const { currentRoom, currentUser, availableRooms } = get()
           if (!currentRoom || !currentUser) return
+
+          // Remove user from room
           const updatedRoom = {
             ...currentRoom,
             players: currentRoom.players.filter((p) => p.id !== currentUser.id),
@@ -260,8 +301,10 @@ export const useGameStore = create<GameStore>()(
 
           let updatedRooms
           if (updatedRoom.players.length === 0) {
+            // Remove empty room
             updatedRooms = availableRooms.filter((r) => r.id !== currentRoom.id)
           } else {
+            // Update room with remaining players
             updatedRooms = availableRooms.map((r) => (r.id === currentRoom.id ? updatedRoom : r))
           }
 
@@ -279,13 +322,19 @@ export const useGameStore = create<GameStore>()(
               totalScore: 0,
             },
           })
+
+          // Save to localStorage and notify other tabs
           saveRoomsToStorage(updatedRooms)
         },
 
         startGame: () => {
           const { currentRoom, gameSettings, availableRooms } = get()
           if (!currentRoom) return
+
+          // Get filtered and prepared questions for the entire game
           const gameQuestions = getFilteredQuestions(gameSettings)
+
+          // Ensure we have at least one question
           if (gameQuestions.length === 0) {
             set({ error: "Não foi possível encontrar perguntas para as configurações selecionadas." })
             return
@@ -299,6 +348,8 @@ export const useGameStore = create<GameStore>()(
           }
 
           const updatedRooms = availableRooms.map((r) => (r.id === currentRoom.id ? updatedRoom : r))
+
+          // Initialize game session with the first question
           set({
             currentRoom: updatedRoom,
             currentGameQuestions: gameQuestions,
@@ -313,6 +364,8 @@ export const useGameStore = create<GameStore>()(
               totalScore: 0,
             },
           })
+
+          // Save to localStorage and notify other tabs
           saveRoomsToStorage(updatedRooms)
         },
 
@@ -343,6 +396,8 @@ export const useGameStore = create<GameStore>()(
           }
 
           const updatedRooms = availableRooms.map((r) => (r.id === currentRoom.id ? updatedRoom : r))
+
+          // Update game session
           const updatedGameSession = {
             ...currentGameSession,
             questionsAnswered: currentGameSession.questionsAnswered + 1,
@@ -357,6 +412,8 @@ export const useGameStore = create<GameStore>()(
             showResults: true,
             currentGameSession: updatedGameSession,
           })
+
+          // Save to localStorage and notify other tabs
           saveRoomsToStorage(updatedRooms)
         },
 
@@ -365,12 +422,16 @@ export const useGameStore = create<GameStore>()(
           if (!currentRoom || !currentGameQuestions.length) return
 
           const nextIndex = currentRoom.questionIndex + 1
+
+          // Check if we've reached the end of the game
           if (nextIndex >= currentGameQuestions.length) {
             get().endGame()
             return
           }
 
           const nextQuestion = currentGameQuestions[nextIndex]
+
+          // Safety check
           if (!nextQuestion) {
             console.error("Next question not found, ending game")
             get().endGame()
@@ -391,6 +452,8 @@ export const useGameStore = create<GameStore>()(
             showResults: false,
             availableRooms: updatedRooms,
           })
+
+          // Save to localStorage and notify other tabs
           saveRoomsToStorage(updatedRooms)
         },
 
@@ -412,7 +475,11 @@ export const useGameStore = create<GameStore>()(
             showResults: true,
             availableRooms: updatedRooms,
           })
+
+          // Save game to Firebase
           await get().saveGameToFirebase()
+
+          // Save to localStorage and notify other tabs
           saveRoomsToStorage(updatedRooms)
         },
 
@@ -421,6 +488,7 @@ export const useGameStore = create<GameStore>()(
           if (!currentUser || !currentGameSession.startTime) return
 
           try {
+            // Salvar jogo no banco de dados local primeiro
             await database.saveGame({
               userId: currentUser.id,
               score: currentGameSession.totalScore,
@@ -440,13 +508,14 @@ export const useGameStore = create<GameStore>()(
               await database.syncUserWithFirebase(currentUser.id, {
                 score: updatedFirebaseUser.score,
                 gamesPlayed: updatedFirebaseUser.gamesPlayed,
+                level: updatedFirebaseUser.level,
               })
 
               // Atualizar usuário no store com dados do Firebase
               const updatedUser = {
                 ...currentUser,
                 totalScore: updatedFirebaseUser.score,
-                level: Math.floor(updatedFirebaseUser.score / 1000) + 1,
+                level: updatedFirebaseUser.level,
                 gamesPlayed: updatedFirebaseUser.gamesPlayed,
                 correctAnswers: currentUser.correctAnswers + currentGameSession.correctAnswers,
               }
@@ -468,8 +537,11 @@ export const useGameStore = create<GameStore>()(
         setLoading: (loading) => set({ isLoading: loading }),
 
         updateOnlineUsers: () => {
+          // Simulate real-time updates by occasionally changing online users
           const { currentUser } = get()
           const newOnlineUsers = generateMockOnlineUsers()
+
+          // Always include current user if authenticated
           if (currentUser && !newOnlineUsers.find((u) => u.id === currentUser.id)) {
             newOnlineUsers.push(currentUser)
           }
@@ -495,15 +567,22 @@ export const useGameStore = create<GameStore>()(
   ),
 )
 
+// Set up cross-tab synchronization
 if (typeof window !== "undefined") {
+  // Listen for storage events from other tabs
   window.addEventListener("storage", (e) => {
     if (e.key === STORAGE_KEYS.ROOM_UPDATE) {
+      // Sync rooms when another tab updates them
       useGameStore.getState().syncRooms()
     }
   })
+
+  // Periodic sync to ensure consistency
   setInterval(() => {
     useGameStore.getState().syncRooms()
   }, 5000)
+
+  // Cleanup empty rooms periodically
   setInterval(() => {
     const { availableRooms } = useGameStore.getState()
     const activeRooms = availableRooms.filter(
