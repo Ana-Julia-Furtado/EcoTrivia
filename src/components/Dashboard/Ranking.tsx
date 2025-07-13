@@ -242,8 +242,6 @@ export const Ranking: React.FC<RankingProps> = ({
                       <span>RA: {user.ra}</span>
                       <span>•</span>
                       <div className="flex items-center space-x-1">
-                        <TrendingUp className="h-3 w-3" />
-                        <span>Nível {Math.floor(user.score / 1000) + 1}</span>
                       </div>
                     </div>
                   </div>
