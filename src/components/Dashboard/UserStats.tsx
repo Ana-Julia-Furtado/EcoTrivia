@@ -28,6 +28,11 @@ export const UserStats: React.FC = () => {
   const [accuracyValue, setAccuracyValue] = useState(0)
   const [currentUserRank, setCurrentUserRank] = useState<number | null>(null)
   const [rankingLoading, setRankingLoading] = useState(true)
+  const [firebaseStats, setFirebaseStats] = useState({
+    totalScore: 0,
+    gamesPlayed: 0,
+    level: 1,
+  })
 
   useEffect(() => {
     const visitedBefore = localStorage.getItem("hasVisited")
@@ -94,15 +99,19 @@ export const UserStats: React.FC = () => {
         setUserGames(games)
         setStats(userStats)
 
-        // Sincronizar dados com Firebase se necessário
-        try {
-          const firebaseStats = await firebaseAuth.getUserStats(currentUser.id)
-          if (firebaseStats && firebaseStats.gamesPlayed !== currentUser.gamesPlayed) {
-            // Atualizar dados locais com dados do Firebase
-            await database.syncUserWithFirebase(currentUser.id, firebaseStats)
+        // Carregar dados do Firebase
+        const firebaseData = await firebaseAuth.getUserStats(currentUser.id)
+        if (firebaseData) {
+          setFirebaseStats({
+            totalScore: firebaseData.score,
+            gamesPlayed: firebaseData.gamesPlayed,
+            level: firebaseData.level,
+          })
+          
+          // Sincronizar dados com Firebase se necessário
+          if (firebaseData.gamesPlayed !== currentUser.gamesPlayed) {
+            await database.syncUserWithFirebase(currentUser.id, firebaseData)
           }
-        } catch (error) {
-          console.error("Error syncing with Firebase:", error)
         }
       } catch (error) {
         console.error("Error loading user stats:", error)
@@ -144,13 +153,13 @@ export const UserStats: React.FC = () => {
     {
       icon: Trophy,
       label: "Pontuação Total",
-      value: currentUser.totalScore,
+      value: firebaseStats.totalScore,
       color: "from-yellow-400 to-yellow-600",
     },
     {
       icon: Target,
       label: "Jogos Realizados",
-      value: stats.totalGames - currentUser.gamesPlayed,
+      value: firebaseStats.gamesPlayed,
       color: "from-primary-500 to-primary-700",
     },
     {
