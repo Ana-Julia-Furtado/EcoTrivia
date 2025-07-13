@@ -7,6 +7,7 @@ import { useGameStore } from "../../store/gameStore"
 import { database, type GameDocument } from "../../services/database"
 import { motion } from "framer-motion"
 import { firebaseRanking } from "../../services/firebaseRanking"
+import { firebaseAuth } from "../../services/firebaseAuth"
 
 function getRandomNumber(min = 60, max = 90) {
   return Math.floor(Math.random() * (max - min + 1)) + min
@@ -92,6 +93,17 @@ export const UserStats: React.FC = () => {
 
         setUserGames(games)
         setStats(userStats)
+
+        // Sincronizar dados com Firebase se necessário
+        try {
+          const firebaseStats = await firebaseAuth.getUserStats(currentUser.id)
+          if (firebaseStats && firebaseStats.gamesPlayed !== currentUser.gamesPlayed) {
+            // Atualizar dados locais com dados do Firebase
+            await database.syncUserWithFirebase(currentUser.id, firebaseStats)
+          }
+        } catch (error) {
+          console.error("Error syncing with Firebase:", error)
+        }
       } catch (error) {
         console.error("Error loading user stats:", error)
       } finally {
@@ -134,14 +146,12 @@ export const UserStats: React.FC = () => {
       label: "Pontuação Total",
       value: currentUser.totalScore,
       color: "from-yellow-400 to-yellow-600",
-      change: stats.totalScore > 0 ? `+${stats.totalScore - currentUser.totalScore}` : null,
     },
     {
       icon: Target,
       label: "Jogos Realizados",
-      value: currentUser.gamesPlayed,
+      value: stats.totalGames - currentUser.gamesPlayed,
       color: "from-primary-500 to-primary-700",
-      change: null,
     },
     {
       icon: Award,
@@ -192,22 +202,27 @@ export const UserStats: React.FC = () => {
                 <div>
                   <p className="text-gray-600 text-sm font-medium">{stat.label}</p>
                   <div className="flex items-center space-x-2">
-                    <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                    <motion.p 
+                      key={stat.value}
+                      initial={{ scale: 1.1, color: '#22c55e' }}
+                      animate={{ scale: 1, color: '#111827' }}
+                      transition={{ duration: 0.3 }}
+                      className="text-3xl font-bold text-gray-900"
+                    >
+                      {stat.value}
+                    </motion.p>
                     {stat.label === "Ranking Global" && rankingLoading && (
                       <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
                     )}
                   </div>
-                  {stat.change && <p className="text-green-600 text-sm font-medium">{stat.change}</p>}
-                  {stat.label === "Ranking Global" && currentUserRank && (
-                    <p className="text-gray-500 text-xs mt-1">
-                      {currentUserRank <= 10
-                        ? "Top 10!"
-                        : currentUserRank <= 50
-                          ? "Top 50!"
-                          : currentUserRank <= 100
-                            ? "Top 100!"
-                            : "Continue jogando!"}
-                    </p>
+                  {stat.change && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-green-600 text-sm font-medium"
+                    >
+                      {stat.change}
+                    </motion.p>
                   )}
                 </div>
                 <div
