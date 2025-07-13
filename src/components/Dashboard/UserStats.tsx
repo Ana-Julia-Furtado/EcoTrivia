@@ -1,61 +1,57 @@
 "use client"
 
 import type React from "react"
-import { useEffect, useState } from "react"
-import { Trophy, Target, Award } from "lucide-react"
+import { useEffect, useState, useMemo, useCallback } from "react"
+import { Trophy, Target, Award, RefreshCw } from "lucide-react"
 import { useGameStore } from "../../store/gameStore"
-import { database, type GameDocument } from "../../services/database"
 import { motion } from "framer-motion"
 import { firebaseRanking } from "../../services/firebaseRanking"
-import { firebaseAuth } from "../../services/firebaseAuth"
 
 function getRandomNumber(min = 60, max = 90) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 export const UserStats: React.FC = () => {
-  const { currentUser } = useGameStore()
-  const [userGames, setUserGames] = useState<GameDocument[]>([])
-  const [stats, setStats] = useState({
-    totalGames: 0,
-    totalScore: 0,
-    averageScore: 0,
-    bestScore: 0,
-    totalCorrectAnswers: 0,
-    accuracy: 0,
-  })
-  const [loading, setLoading] = useState(true)
+  // Consolidate store selectors to prevent unnecessary re-renders
+  const { currentUser, isLoading, isHydrated, syncUserFromFirebase } = useGameStore(
+    useCallback(
+      (state) => ({
+        currentUser: state.currentUser,
+        isLoading: state.isLoading,
+        isHydrated: state.isHydrated,
+        syncUserFromFirebase: state.syncUserFromFirebase,
+      }),
+      [],
+    ),
+  )
+
   const [accuracyValue, setAccuracyValue] = useState(0)
   const [currentUserRank, setCurrentUserRank] = useState<number | null>(null)
   const [rankingLoading, setRankingLoading] = useState(true)
-  const [firebaseStats, setFirebaseStats] = useState({
-    totalScore: 0,
-    gamesPlayed: 0,
-    level: 1,
-  })
+  const [syncing, setSyncing] = useState(false)
 
+  // Memoize accuracy calculation to prevent unnecessary re-calculations
   useEffect(() => {
     const visitedBefore = localStorage.getItem("hasVisited")
     if (!visitedBefore) {
-      // Primeira visita
       setAccuracyValue(0)
       localStorage.setItem("hasVisited", "true")
     } else {
-      // Acessos seguintes: aplica a função
       setAccuracyValue(getRandomNumber(60, 95))
     }
   }, [])
 
-  // Buscar ranking do usuário
+  // Debounced ranking subscription
   useEffect(() => {
+    if (!currentUser || !isHydrated) {
+      setRankingLoading(false)
+      return
+    }
+
     let unsubscribe: (() => void) | null = null
+    let timeoutId: NodeJS.Timeout
 
-    const setupRankingListener = async () => {
-      if (!currentUser) {
-        setRankingLoading(false)
-        return
-      }
-
+    const setupRankingListener = () => {
       try {
         setRankingLoading(true)
 
@@ -78,58 +74,35 @@ export const UserStats: React.FC = () => {
       }
     }
 
-    setupRankingListener()
+    // Delay ranking subscription to prevent flickering
+    timeoutId = setTimeout(setupRankingListener, 1000)
 
     return () => {
+      clearTimeout(timeoutId)
       if (unsubscribe) {
         unsubscribe()
       }
     }
-  }, [currentUser])
+  }, [currentUser, isHydrated]) // Updated dependency array
 
-  useEffect(() => {
-    const loadUserStats = async () => {
-      if (!currentUser) return
+  const handleManualSync = useCallback(async () => {
+    if (!currentUser || syncing) return
 
-      try {
-        setLoading(true)
-        const games = await database.getUserGames(currentUser.id)
-        const userStats = await database.getUserStats(currentUser.id)
-
-        setUserGames(games)
-        setStats(userStats)
-
-        // Carregar dados do Firebase
-        const firebaseData = await firebaseAuth.getUserStats(currentUser.id)
-        if (firebaseData) {
-          setFirebaseStats({
-            totalScore: firebaseData.score,
-            gamesPlayed: firebaseData.gamesPlayed,
-            level: firebaseData.level,
-          })
-          
-          // Sincronizar dados com Firebase se necessário
-          if (firebaseData.gamesPlayed !== currentUser.gamesPlayed) {
-            await database.syncUserWithFirebase(currentUser.id, firebaseData)
-          }
-        }
-      } catch (error) {
-        console.error("Error loading user stats:", error)
-      } finally {
-        setLoading(false)
-      }
+    try {
+      setSyncing(true)
+      await syncUserFromFirebase()
+    } catch (error) {
+      console.error("Error during manual sync:", error)
+    } finally {
+      setSyncing(false)
     }
+  }, [currentUser, syncing, syncUserFromFirebase])
 
-    loadUserStats()
-  }, [currentUser])
-
-  if (!currentUser) return null
-
-  const getRankDisplay = () => {
+  // Memoize rank display functions
+  const getRankDisplay = useCallback(() => {
     if (rankingLoading) return "..."
     if (currentUserRank === null) return "N/A"
 
-    // Adicionar sufixo ordinal
     const getRankSuffix = (rank: number) => {
       if (rank === 1) return "1º"
       if (rank === 2) return "2º"
@@ -138,47 +111,57 @@ export const UserStats: React.FC = () => {
     }
 
     return getRankSuffix(currentUserRank)
-  }
+  }, [rankingLoading, currentUserRank])
 
-  const getRankColor = () => {
+  const getRankColor = useCallback(() => {
     if (currentUserRank === null) return "from-gray-400 to-gray-600"
     if (currentUserRank === 1) return "from-yellow-400 to-yellow-600"
     if (currentUserRank === 2) return "from-gray-300 to-gray-500"
     if (currentUserRank === 3) return "from-amber-500 to-amber-700"
     if (currentUserRank <= 10) return "from-green-400 to-green-600"
     return "from-blue-400 to-blue-600"
-  }
+  }, [currentUserRank])
 
-  const statCards = [
-    {
-      icon: Trophy,
-      label: "Pontuação Total",
-      value: firebaseStats.totalScore,
-      color: "from-yellow-400 to-yellow-600",
-    },
-    {
-      icon: Target,
-      label: "Jogos Realizados",
-      value: firebaseStats.gamesPlayed,
-      color: "from-primary-500 to-primary-700",
-    },
-    {
-      icon: Award,
-      label: "Nível Atual",
-      value: currentUser.level,
-      color: "from-secondary-500 to-secondary-700",
-      change: null,
-    },
-    {
-      icon: Trophy,
-      label: "Ranking Global",
-      value: getRankDisplay(),
-      color: getRankColor(),
-      change: currentUserRank && currentUserRank <= 3 ? "🏆" : null,
-    },
-  ]
+  // Memoize stat cards to prevent unnecessary re-renders
+  const statCards = useMemo(() => {
+    if (!currentUser) return []
 
-  if (loading) {
+    return [
+      {
+        icon: Trophy,
+        label: "Pontuação Total",
+        value: currentUser.totalScore || 0,
+        color: "from-yellow-400 to-yellow-600",
+        isUpdating: isLoading,
+      },
+      {
+        icon: Target,
+        label: "Jogos Realizados",
+        value: currentUser.gamesPlayed || 0,
+        color: "from-primary-500 to-primary-700",
+        isUpdating: isLoading,
+      },
+      {
+        icon: Award,
+        label: "Nível Atual",
+        value: currentUser.level,
+        color: "from-secondary-500 to-secondary-700",
+        change: null,
+        isUpdating: isLoading,
+      },
+      {
+        icon: Trophy,
+        label: "Ranking Global",
+        value: getRankDisplay(),
+        color: getRankColor(),
+        change: currentUserRank && currentUserRank <= 3 ? "🏆" : null,
+        isUpdating: rankingLoading,
+      },
+    ]
+  }, [currentUser, isLoading, getRankDisplay, getRankColor, currentUserRank, rankingLoading])
+
+  // Show loading only during initial hydration
+  if (!isHydrated || (!currentUser && isLoading)) {
     return (
       <div className="bg-white rounded-xl shadow-lg p-6">
         <div className="animate-pulse">
@@ -193,11 +176,25 @@ export const UserStats: React.FC = () => {
     )
   }
 
+  if (!currentUser) return null
+
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="bg-white rounded-xl shadow-lg p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Suas Estatísticas</h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-gray-900">Suas Estatísticas</h3>
+          <button
+            onClick={handleManualSync}
+            disabled={syncing || isLoading}
+            className="flex items-center space-x-2 px-3 py-1 text-sm bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Sincronizar dados"
+          >
+            <RefreshCw className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`} />
+            <span>{syncing ? "Sincronizando..." : "Atualizar"}</span>
+          </button>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {statCards.map((stat, index) => (
             <motion.div
@@ -205,27 +202,26 @@ export const UserStats: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 hover:shadow-md transition-shadow"
+              className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 hover:shadow-md transition-shadow relative"
             >
               <div className="flex items-center justify-between">
-                <div>
+                <div className="flex-1">
                   <p className="text-gray-600 text-sm font-medium">{stat.label}</p>
                   <div className="flex items-center space-x-2">
-                    <motion.p 
-                      key={stat.value}
-                      initial={{ scale: 1.1, color: '#22c55e' }}
-                      animate={{ scale: 1, color: '#111827' }}
-                      transition={{ duration: 0.3 }}
+                    <motion.p
+                      key={`${stat.label}-${stat.value}`}
+                      initial={{ scale: 1 }}
+                      animate={{ scale: 1 }}
                       className="text-3xl font-bold text-gray-900"
                     >
                       {stat.value}
                     </motion.p>
-                    {stat.label === "Ranking Global" && rankingLoading && (
+                    {stat.isUpdating && (
                       <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
                     )}
                   </div>
                   {stat.change && (
-                    <motion.p 
+                    <motion.p
                       initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
                       className="text-green-600 text-sm font-medium"
@@ -235,7 +231,7 @@ export const UserStats: React.FC = () => {
                   )}
                 </div>
                 <div
-                  className={`w-12 h-12 rounded-full bg-gradient-to-r ${stat.color} flex items-center justify-center`}
+                  className={`w-12 h-12 rounded-full bg-gradient-to-r ${stat.color} flex items-center justify-center flex-shrink-0`}
                 >
                   <stat.icon className="h-6 w-6 text-white" />
                 </div>
@@ -243,6 +239,14 @@ export const UserStats: React.FC = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* Sync status indicator - only show when actively syncing */}
+        {syncing && (
+          <div className="mt-4 flex items-center justify-center space-x-2 text-sm text-gray-600">
+            <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+            <span>Sincronizando dados...</span>
+          </div>
+        )}
       </div>
     </div>
   )
