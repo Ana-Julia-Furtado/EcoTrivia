@@ -264,6 +264,27 @@ export const QuestionCard: React.FC = () => {
                   </p>
                 )}
               </div>
+
+              {currentGameSession && (
+                <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                  <h4 className="font-semibold text-gray-800 mb-2">Progresso da Sessão</h4>
+                  <div className="grid grid-cols-3 gap-4 text-sm">
+                    <div className="text-center">
+                      <p className="font-medium text-gray-900">{currentGameSession.questionsAnswered}</p>
+                      <p className="text-gray-600">Perguntas</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="font-medium text-green-600">{currentGameSession.correctAnswers}</p>
+                      <p className="text-gray-600">Correto</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="font-medium text-blue-600">{currentGameSession.totalScore}</p>
+                      <p className="text-gray-600">Pontos Totais</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {currentQuestion.explanation && (
                 <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
                   <h4 className="font-semibold text-blue-800 mb-2">Explicação</h4>
