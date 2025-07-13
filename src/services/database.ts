@@ -1,3 +1,4 @@
+
 interface UserDocument {
   _id: string;
   name: string;
@@ -128,6 +129,8 @@ class MongoLikeDatabase {
       .sort((a, b) => b.totalScore - a.totalScore)
       .slice(0, limit);
   }
+
+
   async saveGame(gameData: Omit<GameDocument, '_id'>): Promise<GameDocument> {
     if (!this.db) throw new Error('Database not initialized');
 
@@ -136,12 +139,78 @@ class MongoLikeDatabase {
       _id: Date.now().toString() + Math.random().toString(36).substr(2, 9)
     };
 
-    return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['games'], 'readwrite');
-      const store = transaction.objectStore('games');
-      const request = store.add(game);
+    return new Promise(async (resolve, reject) => {
+      try {
+        const transaction = this.db!.transaction(['games'], 'readwrite');
+        const store = transaction.objectStore('games');
+        const request = store.add(game);
 
-      request.onsuccess = () => resolve(game);
+        request.onsuccess = async () => {
+          try {
+            await this.incrementUserGamesPlayed(gameData.userId);
+            resolve(game);
+          } catch (error) {
+            console.error('Error incrementing games played:', error);
+            resolve(game);
+          }
+        };
+        request.onerror = () => reject(request.error);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+  async incrementUserGamesPlayed(userId: string): Promise<void> {
+    if (!this.db) throw new Error('Database not initialized');
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['users'], 'readwrite');
+      const store = transaction.objectStore('users');
+      const request = store.get(userId);
+
+      request.onsuccess = () => {
+        const user = request.result;
+        if (user) {
+          user.gamesPlayed = (user.gamesPlayed || 0) + 1;
+          user.updatedAt = new Date();
+          
+          const updateRequest = store.put(user);
+          updateRequest.onsuccess = () => resolve();
+          updateRequest.onerror = () => reject(updateRequest.error);
+        } else {
+          reject(new Error('User not found'));
+        }
+      };
+      
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  // New method to sync user data with Firebase
+  async syncUserWithFirebase(userId: string, firebaseData: { score: number; gamesPlayed: number; level: number }): Promise<void> {
+    if (!this.db) throw new Error('Database not initialized');
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['users'], 'readwrite');
+      const store = transaction.objectStore('users');
+      const request = store.get(userId);
+
+      request.onsuccess = () => {
+        const user = request.result;
+        if (user) {
+          user.totalScore = firebaseData.score;
+          user.gamesPlayed = firebaseData.gamesPlayed;
+          user.level = firebaseData.level;
+          user.updatedAt = new Date();
+          
+          const updateRequest = store.put(user);
+          updateRequest.onsuccess = () => resolve();
+          updateRequest.onerror = () => reject(updateRequest.error);
+        } else {
+          reject(new Error('User not found'));
+        }
+      };
+      
       request.onerror = () => reject(request.error);
     });
   }
