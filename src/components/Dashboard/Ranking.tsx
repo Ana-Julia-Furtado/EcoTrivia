@@ -240,7 +240,6 @@ export const Ranking: React.FC<RankingProps> = ({
                     </div>
                     <div className="flex items-center space-x-2 text-xs text-gray-600">
                       <span>RA: {user.ra}</span>
-                      <span>•</span>
                       <div className="flex items-center space-x-1">
                       </div>
                     </div>
