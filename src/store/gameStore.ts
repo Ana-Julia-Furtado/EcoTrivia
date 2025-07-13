@@ -27,6 +27,7 @@ interface GameStore {
   isLoading: boolean
   error: string | null
   showResults: boolean
+  isHydrated: boolean
 
   // Game session tracking
   currentGameSession: {
@@ -37,7 +38,7 @@ interface GameStore {
   }
 
   // Actions
-  setUser: (user: User) => void
+  setUser: (user: User) => Promise<void>
   logout: () => void
   createRoom: (roomName: string, maxPlayers: number, isPrivate: boolean) => void
   joinRoom: (roomId: string) => void
@@ -52,6 +53,8 @@ interface GameStore {
   updateOnlineUsers: () => void
   syncRooms: () => void
   saveGameToFirebase: () => Promise<void>
+  syncUserFromFirebase: () => Promise<void>
+  setHydrated: (hydrated: boolean) => void
 }
 
 const defaultGameSettings: GameSettings = {
@@ -178,6 +181,9 @@ const loadOnlineUsersFromStorage = (): User[] => {
   }
 }
 
+// Debounce utility
+let syncTimeout: NodeJS.Timeout | null = null
+
 export const useGameStore = create<GameStore>()(
   subscribeWithSelector(
     persist(
@@ -186,15 +192,16 @@ export const useGameStore = create<GameStore>()(
         currentUser: null,
         isAuthenticated: false,
         currentRoom: null,
-        availableRooms: loadRoomsFromStorage(),
+        availableRooms: [],
         currentQuestion: null,
         currentGameQuestions: [],
         playerAnswers: [],
         gameSettings: defaultGameSettings,
-        onlineUsers: loadOnlineUsersFromStorage(),
+        onlineUsers: [],
         isLoading: false,
         error: null,
         showResults: false,
+        isHydrated: false,
         currentGameSession: {
           startTime: null,
           questionsAnswered: 0,
@@ -203,8 +210,9 @@ export const useGameStore = create<GameStore>()(
         },
 
         // Actions
-        setUser: (user) => {
+        setUser: async (user) => {
           set({ currentUser: user, isAuthenticated: true })
+
           // Add current user to online users if not already there
           const { onlineUsers } = get()
           if (!onlineUsers.find((u) => u.id === user.id)) {
@@ -212,6 +220,12 @@ export const useGameStore = create<GameStore>()(
             set({ onlineUsers: updatedUsers })
             saveOnlineUsersToStorage(updatedUsers)
           }
+
+          // Debounced sync to prevent multiple calls
+          if (syncTimeout) clearTimeout(syncTimeout)
+          syncTimeout = setTimeout(async () => {
+            await get().syncUserFromFirebase()
+          }, 500)
         },
 
         logout: () => {
@@ -488,7 +502,21 @@ export const useGameStore = create<GameStore>()(
           if (!currentUser || !currentGameSession.startTime) return
 
           try {
-            // Salvar jogo no banco de dados local primeiro
+            // Primeiro, incrementar jogos realizados localmente
+            const updatedGamesPlayed = (currentUser.gamesPlayed || 0) + 1
+            const newTotalScore = currentUser.totalScore + currentGameSession.totalScore
+
+            // Atualizar usuário local imediatamente
+            const tempUpdatedUser = {
+              ...currentUser,
+              gamesPlayed: updatedGamesPlayed,
+              totalScore: newTotalScore,
+              correctAnswers: currentUser.correctAnswers + currentGameSession.correctAnswers,
+            }
+
+            set({ currentUser: tempUpdatedUser })
+
+            // Salvar jogo no banco de dados local
             await database.saveGame({
               userId: currentUser.id,
               score: currentGameSession.totalScore,
@@ -499,9 +527,12 @@ export const useGameStore = create<GameStore>()(
               category: get().gameSettings.categories,
             })
 
-            // Atualizar pontuação e incrementar contador de jogos no Firebase
-            const newTotalScore = currentUser.totalScore + currentGameSession.totalScore
-            const updatedFirebaseUser = await firebaseAuth.updateScoreAndIncrementGames(currentUser.id, newTotalScore)
+            // Atualizar no Firebase com os novos valores
+            const updatedFirebaseUser = await firebaseAuth.updateScoreAndIncrementGames(
+              currentUser.id,
+              newTotalScore,
+              updatedGamesPlayed,
+            )
 
             if (updatedFirebaseUser) {
               // Sincronizar dados do Firebase com o banco de dados local
@@ -511,8 +542,8 @@ export const useGameStore = create<GameStore>()(
                 level: updatedFirebaseUser.level,
               })
 
-              // Atualizar usuário no store com dados do Firebase
-              const updatedUser = {
+              // Atualizar usuário no store com dados confirmados do Firebase
+              const finalUpdatedUser = {
                 ...currentUser,
                 totalScore: updatedFirebaseUser.score,
                 level: updatedFirebaseUser.level,
@@ -520,13 +551,39 @@ export const useGameStore = create<GameStore>()(
                 correctAnswers: currentUser.correctAnswers + currentGameSession.correctAnswers,
               }
 
-              set({ currentUser: updatedUser })
+              set({ currentUser: finalUpdatedUser })
             }
           } catch (error) {
             console.error("Error saving game to Firebase:", error)
-            set({ error: "Erro ao salvar progresso do jogo. Tente novamente." })
+            set({ error: "Erro ao salvar progresso do jogo. Dados salvos localmente." })
           }
         },
+
+        syncUserFromFirebase: async () => {
+          const { currentUser, isHydrated } = get()
+          if (!currentUser || !isHydrated) return
+
+          try {
+            const firebaseData = await firebaseAuth.getUserStats(currentUser.id)
+            if (firebaseData) {
+              const updatedUser = {
+                ...currentUser,
+                totalScore: firebaseData.score,
+                level: firebaseData.level,
+                gamesPlayed: firebaseData.gamesPlayed,
+              }
+
+              set({ currentUser: updatedUser })
+
+              // Sync with local database
+              await database.syncUserWithFirebase(currentUser.id, firebaseData)
+            }
+          } catch (error) {
+            console.error("Error syncing user from Firebase:", error)
+          }
+        },
+
+        setHydrated: (hydrated) => set({ isHydrated: hydrated }),
 
         setGameSettings: (settings) =>
           set((state) => ({
@@ -562,6 +619,14 @@ export const useGameStore = create<GameStore>()(
           isAuthenticated: state.isAuthenticated,
           gameSettings: state.gameSettings,
         }),
+        onRehydrateStorage: () => (state) => {
+          // Set hydrated flag and load initial data
+          if (state) {
+            state.setHydrated(true)
+            state.availableRooms = loadRoomsFromStorage()
+            state.onlineUsers = loadOnlineUsersFromStorage()
+          }
+        },
       },
     ),
   ),
@@ -577,12 +642,12 @@ if (typeof window !== "undefined") {
     }
   })
 
-  // Periodic sync to ensure consistency
+  // Periodic sync to ensure consistency (reduced frequency)
   setInterval(() => {
     useGameStore.getState().syncRooms()
-  }, 5000)
+  }, 10000) // Increased from 5s to 10s
 
-  // Cleanup empty rooms periodically
+  // Cleanup empty rooms periodically (reduced frequency)
   setInterval(() => {
     const { availableRooms } = useGameStore.getState()
     const activeRooms = availableRooms.filter(
@@ -593,5 +658,5 @@ if (typeof window !== "undefined") {
       saveRoomsToStorage(activeRooms)
       useGameStore.setState({ availableRooms: activeRooms })
     }
-  }, 10000)
+  }, 30000) // Increased from 10s to 30s
 }
