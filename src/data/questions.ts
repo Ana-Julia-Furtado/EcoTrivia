@@ -384,7 +384,7 @@ export const mockQuestions: Question[] = [
     difficulty: 'hard',
     category: 'biodiversidade',
     explanation: 'Corredores ecológicos são importantes para a conservação da biodiversidade, pois permitem que as espécies se movam entre habitats fragmentados, mantendo a variabilidade genética e a saúde das populações.',
-    points: 300
+    points: 300000
   },
   {
     id: '37',
