@@ -136,6 +136,15 @@ export const GameResults: React.FC = () => {
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
+              onClick={handleBackToDashboard}
+              className="flex items-center justify-center space-x-2 px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"
+            >
+              <Home className="h-5 w-5" />
+              <span>De volta para o Dashboard</span>
+            </button>
+
+            
+            <button
               onClick={handlePlayAgain}
               className="flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-nature text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"
             >
@@ -143,13 +152,7 @@ export const GameResults: React.FC = () => {
               <span>Jogar Novamente</span>
             </button>
 
-            <button
-              onClick={handleBackToDashboard}
-              className="flex items-center justify-center space-x-2 px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"
-            >
-              <Home className="h-5 w-5" />
-              <span>De volta para o Dashboard</span>
-            </button>
+            
           </div>
         </div>
       </motion.div>
