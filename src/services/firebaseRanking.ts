@@ -72,8 +72,6 @@ export class FirebaseRankingService {
                 });
               }
             });
-            
-            // Sort by score in descending order and limit results
             users.sort((a, b) => b.score - a.score);
             resolve(users.slice(0, limit));
           } else {
@@ -89,12 +87,6 @@ export class FirebaseRankingService {
       }, { onlyOnce: true });
     });
   }
-
-  /**
-   * Get user's current rank position
-   * @param ra User's RA
-   * @returns Promise with user's rank (1-based) or null if not found
-   */
   async getUserRank(ra: string): Promise<number | null> {
     try {
       const allUsers = await this.getCurrentRanking();
@@ -105,13 +97,6 @@ export class FirebaseRankingService {
       return null;
     }
   }
-
-  /**
-   * Get users around a specific user's rank
-   * @param ra User's RA
-   * @param range Number of users to show above and below
-   * @returns Promise with users around the specified user
-   */
   async getUsersAroundRank(ra: string, range: number = 2): Promise<{
     users: RankingUser[];
     userRank: number | null;
