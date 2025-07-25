@@ -97,8 +97,6 @@ const getFilteredQuestions = async (gameSettings: GameSettings, useFirebase = tr
       console.warn('Erro ao buscar perguntas do Firebase, usando perguntas locais:', error);
     }
   }
-
-  // Fallback para perguntas locais
   let filteredQuestions = [...mockQuestions]
   if (gameSettings.difficulty !== "mixed") {
     filteredQuestions = filteredQuestions.filter((q) => q.difficulty === gameSettings.difficulty)
@@ -322,8 +320,6 @@ export const useGameStore = create<GameStore>()(
         startGame: () => {
           const { currentRoom, gameSettings, availableRooms } = get()
           if (!currentRoom) return
-          
-          // Função assíncrona para carregar perguntas
           const loadAndStartGame = async () => {
             try {
               set({ isLoading: true, error: null });
@@ -379,8 +375,6 @@ export const useGameStore = create<GameStore>()(
         restartGame: () => {
           const { currentRoom, gameSettings, availableRooms } = get()
           if (!currentRoom) return
-          
-          // Função assíncrona para carregar perguntas
           const loadAndRestartGame = async () => {
             try {
               set({ isLoading: true, error: null });
@@ -676,8 +670,6 @@ export const useGameStore = create<GameStore>()(
             state.setHydrated(true)
             state.availableRooms = loadRoomsFromStorage()
             state.onlineUsers = loadOnlineUsersFromStorage()
-           
-           // Inicializar perguntas no Firebase após hidratação
            setTimeout(() => {
              state.initializeQuestions();
            }, 1000);
