@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export const OnlineUsers: React.FC = () => {
   const { onlineUsers, currentUser, updateOnlineUsers } = useGameStore();
-
-  // Update online users every 10 seconds to simulate real-time activity
   useEffect(() => {
     const interval = setInterval(() => {
       updateOnlineUsers();
