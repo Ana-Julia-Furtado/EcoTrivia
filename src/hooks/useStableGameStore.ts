@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react"
 import { useGameStore } from "../store/gameStore"
+<<<<<<< HEAD
+=======
+
+// Custom hook to provide stable data and prevent flickering
+>>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 export const useStableGameStore = () => {
   const store = useGameStore()
   const [stableData, setStableData] = useState({
@@ -11,6 +16,10 @@ export const useStableGameStore = () => {
   })
 
   useEffect(() => {
+<<<<<<< HEAD
+=======
+    // Only update stable data when hydrated and data actually changes
+>>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
     if (store.isHydrated) {
       setStableData((prev) => {
         const hasChanged =

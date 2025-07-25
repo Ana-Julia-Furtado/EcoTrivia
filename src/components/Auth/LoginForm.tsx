@@ -49,7 +49,14 @@ export const LoginForm: React.FC = () => {
 
     try {
       if (isLogin) {
+<<<<<<< HEAD
         const firebaseUser = await firebaseAuth.loginUser(ra);
+=======
+        // Login
+        const firebaseUser = await firebaseAuth.loginUser(ra);
+        
+        // Converter usuario firebase para usuario do app
+>>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         const user = {
           id: firebaseUser.ra,
           name: firebaseUser.username,
@@ -59,10 +66,21 @@ export const LoginForm: React.FC = () => {
           gamesPlayed: 0, 
           correctAnswers: 0 
         };
+<<<<<<< HEAD
         setUser(user);
         setSuccess('Login realizado com sucesso!');
       } else {
         const firebaseUser = await firebaseAuth.registerUser(username, ra);
+=======
+
+        setUser(user);
+        setSuccess('Login realizado com sucesso!');
+      } else {
+        // Registro
+        const firebaseUser = await firebaseAuth.registerUser(username, ra);
+        
+        // Converter usuario firebase para usuario do app
+>>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         const user = {
           id: firebaseUser.ra,
           name: firebaseUser.username,
@@ -72,6 +90,10 @@ export const LoginForm: React.FC = () => {
           gamesPlayed: 0,
           correctAnswers: 0
         };
+<<<<<<< HEAD
+=======
+
+>>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         setUser(user);
         setSuccess('Registro realizado com sucesso!');
       }
