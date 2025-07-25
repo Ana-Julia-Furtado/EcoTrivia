@@ -5,9 +5,6 @@ import type { Question, QuestionCategory } from '../types/game';
 export class FirebaseQuestionsService {
   private questionsRef = ref(database, 'questions');
 
-  /**
-   * Adiciona uma nova pergunta ao Firebase
-   */
   async addQuestion(question: Omit<Question, 'id'>): Promise<string> {
     try {
       const newQuestionRef = push(this.questionsRef);
@@ -23,10 +20,6 @@ export class FirebaseQuestionsService {
       throw new Error('Erro ao adicionar pergunta');
     }
   }
-
-  /**
-   * Busca todas as perguntas do Firebase
-   */
   async getAllQuestions(): Promise<Question[]> {
     try {
       const snapshot = await get(this.questionsRef);
@@ -41,9 +34,6 @@ export class FirebaseQuestionsService {
     }
   }
 
-  /**
-   * Busca perguntas por categoria
-   */
   async getQuestionsByCategory(category: QuestionCategory): Promise<Question[]> {
     try {
       const categoryQuery = query(this.questionsRef, orderByChild('category'), equalTo(category));
@@ -59,10 +49,6 @@ export class FirebaseQuestionsService {
       throw new Error('Erro ao buscar perguntas por categoria');
     }
   }
-
-  /**
-   * Busca perguntas por dificuldade
-   */
   async getQuestionsByDifficulty(difficulty: 'easy' | 'medium' | 'hard'): Promise<Question[]> {
     try {
       const difficultyQuery = query(this.questionsRef, orderByChild('difficulty'), equalTo(difficulty));
@@ -78,10 +64,6 @@ export class FirebaseQuestionsService {
       throw new Error('Erro ao buscar perguntas por dificuldade');
     }
   }
-
-  /**
-   * Busca perguntas filtradas por categoria e dificuldade
-   */
   async getFilteredQuestions(
     categories: QuestionCategory[] = [],
     difficulty?: 'easy' | 'medium' | 'hard'
@@ -90,15 +72,11 @@ export class FirebaseQuestionsService {
       const allQuestions = await this.getAllQuestions();
       
       let filteredQuestions = allQuestions;
-
-      // Filtrar por categorias se especificadas
       if (categories.length > 0) {
         filteredQuestions = filteredQuestions.filter(q => 
           categories.includes(q.category)
         );
       }
-
-      // Filtrar por dificuldade se especificada
       if (difficulty) {
         filteredQuestions = filteredQuestions.filter(q => 
           q.difficulty === difficulty
@@ -111,10 +89,6 @@ export class FirebaseQuestionsService {
       throw new Error('Erro ao buscar perguntas filtradas');
     }
   }
-
-  /**
-   * Busca uma pergunta específica por ID
-   */
   async getQuestionById(id: string): Promise<Question | null> {
     try {
       const snapshot = await get(child(this.questionsRef, id));
@@ -127,10 +101,6 @@ export class FirebaseQuestionsService {
       throw new Error('Erro ao buscar pergunta');
     }
   }
-
-  /**
-   * Atualiza uma pergunta existente
-   */
   async updateQuestion(id: string, updates: Partial<Question>): Promise<void> {
     try {
       const questionRef = child(this.questionsRef, id);
@@ -149,9 +119,6 @@ export class FirebaseQuestionsService {
     }
   }
 
-  /**
-   * Remove uma pergunta
-   */
   async deleteQuestion(id: string): Promise<void> {
     try {
       const questionRef = child(this.questionsRef, id);
@@ -162,21 +129,15 @@ export class FirebaseQuestionsService {
     }
   }
 
-  /**
-   * Inicializa o banco com perguntas padrão (usar apenas uma vez)
-   */
   async seedQuestions(questions: Omit<Question, 'id'>[]): Promise<void> {
     try {
       console.log('Iniciando seed de perguntas...');
       
-      // Verificar se já existem perguntas
       const existingQuestions = await this.getAllQuestions();
       if (existingQuestions.length > 0) {
         console.log('Perguntas já existem no banco. Seed cancelado.');
         return;
       }
-
-      // Adicionar todas as perguntas
       const promises = questions.map(question => this.addQuestion(question));
       await Promise.all(promises);
       
@@ -187,9 +148,6 @@ export class FirebaseQuestionsService {
     }
   }
 
-  /**
-   * Seleciona perguntas aleatórias para um jogo
-   */
   async getRandomQuestions(
     count: number,
     categories: QuestionCategory[] = [],
@@ -202,7 +160,6 @@ export class FirebaseQuestionsService {
         throw new Error('Nenhuma pergunta encontrada com os filtros especificados');
       }
 
-      // Embaralhar e selecionar
       const shuffled = filteredQuestions.sort(() => 0.5 - Math.random());
       const selectedQuestions: Question[] = [];
       
@@ -217,6 +174,4 @@ export class FirebaseQuestionsService {
     }
   }
 }
-
-// Singleton instance
 export const firebaseQuestions = new FirebaseQuestionsService();
