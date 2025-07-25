@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 interface UserDocument {
   _id: string;
   name: string;
@@ -22,7 +26,11 @@ interface GameDocument {
   category: string[];
 }
 
+<<<<<<< HEAD
 class Database {
+=======
+class MongoLikeDatabase {
+>>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   private dbName = 'EcoTriviaDB';
   private version = 1;
   private db: IDBDatabase | null = null;
@@ -184,6 +192,11 @@ class Database {
       request.onerror = () => reject(request.error);
     });
   }
+<<<<<<< HEAD
+=======
+
+  // New method to sync user data with Firebase
+>>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   async syncUserWithFirebase(userId: string, firebaseData: { score: number; gamesPlayed: number; level: number }): Promise<void> {
     if (!this.db) throw new Error('Database not initialized');
 
@@ -267,6 +280,10 @@ class Database {
     };
   }
 }
+<<<<<<< HEAD
 export const database = new Database();
+=======
+export const database = new MongoLikeDatabase();
+>>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 database.init().catch(console.error);
 export type { UserDocument, GameDocument };
