@@ -27,12 +27,8 @@ export const Ranking: React.FC<RankingProps> = ({
       try {
         setLoading(true);
         setError(null);
-
-        // Set up real-time listener for ranking updates
         unsubscribe = firebaseRanking.subscribeToRanking((users) => {
           setRankingUsers(users.slice(0, limit));
-          
-          // Find current user's rank if they exist
           if (currentUser) {
             const userIndex = users.findIndex(user => user.ra === currentUser.id);
             setCurrentUserRank(userIndex >= 0 ? userIndex + 1 : null);
@@ -53,8 +49,6 @@ export const Ranking: React.FC<RankingProps> = ({
     };
 
     setupRankingListener();
-
-    // Cleanup subscription on unmount
     return () => {
       if (unsubscribe) {
         unsubscribe();
