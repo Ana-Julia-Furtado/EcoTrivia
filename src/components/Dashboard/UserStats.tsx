@@ -12,7 +12,6 @@ function getRandomNumber(min = 60, max = 90) {
 }
 
 export const UserStats: React.FC = () => {
-  // Consolidate store selectors to prevent unnecessary re-renders
   const { currentUser, isLoading, isHydrated, syncUserFromFirebase } = useGameStore(
     useCallback(
       (state) => ({
@@ -29,8 +28,6 @@ export const UserStats: React.FC = () => {
   const [currentUserRank, setCurrentUserRank] = useState<number | null>(null)
   const [rankingLoading, setRankingLoading] = useState(true)
   const [syncing, setSyncing] = useState(false)
-
-  // Memoize accuracy calculation to prevent unnecessary re-calculations
   useEffect(() => {
     const visitedBefore = localStorage.getItem("hasVisited")
     if (!visitedBefore) {
@@ -40,8 +37,6 @@ export const UserStats: React.FC = () => {
       setAccuracyValue(getRandomNumber(60, 95))
     }
   }, [])
-
-  // Debounced ranking subscription
   useEffect(() => {
     if (!currentUser || !isHydrated) {
       setRankingLoading(false)
@@ -73,8 +68,6 @@ export const UserStats: React.FC = () => {
         setRankingLoading(false)
       }
     }
-
-    // Delay ranking subscription to prevent flickering
     timeoutId = setTimeout(setupRankingListener, 1000)
 
     return () => {
@@ -83,7 +76,7 @@ export const UserStats: React.FC = () => {
         unsubscribe()
       }
     }
-  }, [currentUser, isHydrated]) // Updated dependency array
+  }, [currentUser, isHydrated]) 
 
   const handleManualSync = useCallback(async () => {
     if (!currentUser || syncing) return
@@ -97,8 +90,6 @@ export const UserStats: React.FC = () => {
       setSyncing(false)
     }
   }, [currentUser, syncing, syncUserFromFirebase])
-
-  // Memoize rank display functions
   const getRankDisplay = useCallback(() => {
     if (rankingLoading) return "..."
     if (currentUserRank === null) return "N/A"
@@ -121,8 +112,6 @@ export const UserStats: React.FC = () => {
     if (currentUserRank <= 10) return "from-green-400 to-green-600"
     return "from-blue-400 to-blue-600"
   }, [currentUserRank])
-
-  // Memoize stat cards to prevent unnecessary re-renders
   const statCards = useMemo(() => {
     if (!currentUser) return []
 
@@ -159,8 +148,6 @@ export const UserStats: React.FC = () => {
       },
     ]
   }, [currentUser, isLoading, getRankDisplay, getRankColor, currentUserRank, rankingLoading])
-
-  // Show loading only during initial hydration
   if (!isHydrated || (!currentUser && isLoading)) {
     return (
       <div className="bg-white rounded-xl shadow-lg p-6">
