@@ -19,18 +19,14 @@ export const useUserData = () => {
 
       try {
         setIsLoading(true)
-
-        // Buscar estatísticas do banco local
         const userStats = await database.getUserStats(currentUser.id)
         const userGames = await database.getUserGames(currentUser.id)
 
         setLocalStats({
           totalGames: userStats.totalGames,
           totalScore: userStats.totalScore,
-          gamesPlayed: userGames.length, // Contar jogos diretamente
+          gamesPlayed: userGames.length, 
         })
-
-        // Se os dados locais diferem do currentUser, sincronizar
         if (userGames.length !== currentUser.gamesPlayed) {
           console.log("Dados locais diferem do store, sincronizando...")
           await syncUserFromFirebase()
@@ -44,8 +40,6 @@ export const useUserData = () => {
 
     loadLocalStats()
   }, [currentUser, syncUserFromFirebase])
-
-  // Retornar dados mais confiáveis (priorizar dados locais se disponíveis)
   const reliableData = {
     totalScore: Math.max(currentUser?.totalScore || 0, localStats.totalScore),
     gamesPlayed: Math.max(currentUser?.gamesPlayed || 0, localStats.gamesPlayed),
