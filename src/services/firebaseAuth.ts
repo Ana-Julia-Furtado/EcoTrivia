@@ -1,4 +1,4 @@
-import { database } from "../config/firebase" // Updated import path
+import { database } from "../config/firebase" 
 import { ref, get, set, child } from "firebase/database"
 
 export interface FirebaseUser {
@@ -105,13 +105,6 @@ export class FirebaseAuthService {
       throw new Error("Erro ao atualizar número de jogos")
     }
   }
-
-  /**
-   * Atualiza tanto a pontuação quanto o número de jogos realizados
-   * @param ra RA do usuário
-   * @param newScore Nova pontuação total
-   * @param incrementGames Se deve incrementar o contador de jogos
-   */
   async updateUserStats(ra: string, newScore: number, incrementGames = false): Promise<void> {
     try {
       const userRef = child(this.usersRef, ra)
@@ -132,12 +125,6 @@ export class FirebaseAuthService {
       throw new Error("Erro ao atualizar estatísticas do usuário")
     }
   }
-
-  /**
-   * Calcula o nível do usuário baseado na pontuação
-   * @param score Pontuação total do usuário
-   * @returns Nível calculado
-   */
   private calculateLevel(score: number): number {
     if (score < 100) return 1
     if (score < 250) return 2
@@ -150,11 +137,6 @@ export class FirebaseAuthService {
     if (score < 3000) return 9
     return 10
   }
-
-  /**
-   * Atualiza o nível do usuário baseado na pontuação
-   * @param ra RA do usuário
-   */
   async updateUserLevel(ra: string): Promise<void> {
     try {
       const userRef = child(this.usersRef, ra)
@@ -175,10 +157,6 @@ export class FirebaseAuthService {
     }
   }
 
-  /**
-   * Incrementa apenas o contador de jogos realizados
-   * @param ra RA do usuário
-   */
   async incrementUserGamesCount(ra: string): Promise<FirebaseUser | null> {
     try {
       const userRef = child(this.usersRef, ra)
@@ -204,11 +182,6 @@ export class FirebaseAuthService {
     }
   }
 
-  /**
-   * Atualiza pontuação e incrementa jogos em uma única operação
-   * @param ra RA do usuário
-   * @param newScore Nova pontuação total
-   */
   async updateScoreAndIncrementGames(ra: string, newScore: number): Promise<FirebaseUser | null> {
     try {
       const userRef = child(this.usersRef, ra)
