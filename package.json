@@ -16,11 +16,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.20.1",
-<<<<<<< HEAD
     "zustand": "^4.5.7"
-=======
-    "zustand": "^4.4.7"
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

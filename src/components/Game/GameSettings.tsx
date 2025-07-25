@@ -1,11 +1,7 @@
 import React from 'react';
 import { X, Clock, Target, Filter } from 'lucide-react';
 import { useGameStore } from '../../store/gameStore';
-<<<<<<< HEAD
 import { questionCategories } from '../../services/questions';
-=======
-import { questionCategories } from '../../data/questions';
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 import { QuestionCategory } from '../../types/game';
 
 interface GameSettingsProps {

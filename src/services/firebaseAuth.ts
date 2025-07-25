@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { database } from "../config/firebase" // Updated import path
-=======
-import { database } from "../config/firebase"
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 import { ref, get, set, child } from "firebase/database"
 
 export interface FirebaseUser {
@@ -12,15 +8,8 @@ export interface FirebaseUser {
   gamesPlayed: number
   level: number
 }
-<<<<<<< HEAD
 export class FirebaseAuthService {
   private usersRef = ref(database, "users")
-=======
-
-export class FirebaseAuthService {
-  private usersRef = ref(database, "users")
-
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   async checkRAExists(ra: string): Promise<boolean> {
     try {
       const snapshot = await get(child(this.usersRef, ra))
@@ -30,27 +19,15 @@ export class FirebaseAuthService {
       throw new Error("Erro ao verificar RA no banco de dados")
     }
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   async registerUser(username: string, ra: string): Promise<FirebaseUser> {
     try {
       if (!/^\d{6}$/.test(ra)) {
         throw new Error("RA deve conter exatamente 6 dígitos")
       }
-<<<<<<< HEAD
-=======
-
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
       const raExists = await this.checkRAExists(ra)
       if (raExists) {
         throw new Error("Este RA já está cadastrado")
       }
-<<<<<<< HEAD
-=======
-
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
       const newUser: FirebaseUser = {
         username: username.trim(),
         ra,
@@ -58,13 +35,7 @@ export class FirebaseAuthService {
         gamesPlayed: 0,
         level: 1,
       }
-<<<<<<< HEAD
       await set(child(this.usersRef, ra), newUser)
-=======
-
-      await set(child(this.usersRef, ra), newUser)
-
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
       return newUser
     } catch (error) {
       console.error("Registration error:", error)
@@ -115,10 +86,6 @@ export class FirebaseAuthService {
       throw new Error("Erro ao atualizar pontuação")
     }
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   async incrementGamesPlayed(ra: string): Promise<void> {
     try {
       const userRef = child(this.usersRef, ra)
@@ -220,11 +187,7 @@ export class FirebaseAuthService {
       if (snapshot.exists()) {
         const userData = snapshot.val()
         const currentGamesPlayed = userData.gamesPlayed || 0
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         const updatedUserData = {
           ...userData,
           gamesPlayed: currentGamesPlayed + 1,
@@ -233,11 +196,7 @@ export class FirebaseAuthService {
         await set(userRef, updatedUserData)
         return updatedUserData
       }
-<<<<<<< HEAD
 
-=======
-      
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
       return null
     } catch (error) {
       console.error("Error incrementing games count:", error)
@@ -259,11 +218,7 @@ export class FirebaseAuthService {
         const userData = snapshot.val()
         const currentGamesPlayed = userData.gamesPlayed || 0
         const newLevel = this.calculateLevel(newScore)
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         const updatedUserData = {
           ...userData,
           score: newScore,
@@ -274,11 +229,7 @@ export class FirebaseAuthService {
         await set(userRef, updatedUserData)
         return updatedUserData
       }
-<<<<<<< HEAD
 
-=======
-      
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
       return null
     } catch (error) {
       console.error("Error updating score and games count:", error)
@@ -315,10 +266,6 @@ export class FirebaseAuthService {
       return null
     }
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   async getAllUsers(): Promise<FirebaseUser[]> {
     try {
       const snapshot = await get(this.usersRef)
@@ -332,10 +279,6 @@ export class FirebaseAuthService {
       return []
     }
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   async getUserStats(ra: string): Promise<{ score: number; gamesPlayed: number; level: number } | null> {
     try {
       const user = await this.getUserByRA(ra)

@@ -4,11 +4,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { Clock, CheckCircle, XCircle } from "lucide-react"
 import { useGameStore } from "../../store/gameStore"
-<<<<<<< HEAD
 import { questionCategories } from "../../services/questions"
-=======
-import { questionCategories } from "../../data/questions"
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 import { firebaseAuth } from "../../services/firebaseAuth"
 
 export const QuestionCard: React.FC = () => {
@@ -37,15 +33,11 @@ export const QuestionCard: React.FC = () => {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-<<<<<<< HEAD
           <div className="flex flex-col items-center space-y-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
             <h2 className="text-2xl font-bold text-gray-900">Carregando pergunta...</h2>
             <p className="text-gray-600">Buscando perguntas do Firebase...</p>
           </div>
-=======
-          <h2 className="text-2xl font-bold text-gray-900">Carregando pergunta...</h2>
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         </div>
       </div>
     )

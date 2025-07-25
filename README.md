@@ -22,11 +22,7 @@ Um jogo interativo de trivia sobre sustentabilidade ambiental com autenticação
 - **Frontend**: React + TypeScript + Vite
 - **Styling**: Tailwind CSS + Framer Motion
 - **Estado**: Zustand
-<<<<<<< HEAD
 - **Banco de Dados**: Firebase Realtime Database (usuários e perguntas)
-=======
-- **Banco de Dados**: Firebase Realtime Database
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 - **Autenticação**: Firebase Auth (customizada)
 
 ## 📋 Configuração do Firebase
@@ -62,7 +58,6 @@ const firebaseConfig = {
 };
 ```
 
-<<<<<<< HEAD
 ## 📝 Sistema de Perguntas
 
 ### Estrutura no Firebase
@@ -90,8 +85,6 @@ As perguntas são armazenadas no Firebase Realtime Database com a seguinte estru
 - O sistema verifica se existem perguntas e faz o seed automaticamente
 - Fallback para perguntas locais em caso de erro
 
-=======
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 ## 🎮 Como Usar
 
 ### Registro
@@ -121,7 +114,6 @@ users/
     username: string
     ra: string (chave primária)
     score: number
-<<<<<<< HEAD
     gamesPlayed: number
 
 questions/
@@ -134,8 +126,6 @@ questions/
     category: string
     explanation: string
     points: number
-=======
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 ```
 
 ## 🔒 Validações
@@ -150,12 +140,8 @@ questions/
 - [ ] Sistema de conquistas
 - [ ] Ranking global
 - [ ] Chat em tempo real nas salas
-<<<<<<< HEAD
 - [x] Sistema de perguntas no Firebase
 - [ ] Interface para adicionar/editar perguntas
-=======
-- [ ] Mais categorias de perguntas
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 - [ ] Sistema de níveis avançado
 - [ ] Estatísticas detalhadas
 

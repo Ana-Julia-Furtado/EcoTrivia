@@ -1,13 +1,9 @@
 import { create } from "zustand"
 import { persist, subscribeWithSelector } from "zustand/middleware"
 import type { User, GameRoom, Question, GameState, PlayerAnswer, GameSettings } from "../types/game"
-<<<<<<< HEAD
 import { mockQuestions } from "../services/questions"
 import { firebaseQuestions } from "../services/firebaseQuestions"
 import { seedFirebaseQuestions, checkFirebaseQuestions } from "../services/questionSeeder"
-=======
-import { mockQuestions } from "../data/questions"
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 import { firebaseAuth } from "../services/firebaseAuth"
 import { database } from "../services/database"
 
@@ -50,11 +46,8 @@ interface GameStore {
   saveGameToFirebase: () => Promise<void>
   syncUserFromFirebase: () => Promise<void>
   setHydrated: (hydrated: boolean) => void
-<<<<<<< HEAD
   initializeQuestions: () => Promise<void>
   loadQuestionsFromFirebase: (gameSettings: GameSettings) => Promise<Question[]>
-=======
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 }
 
 const defaultGameSettings: GameSettings = {
@@ -87,7 +80,6 @@ const defaultGameSettings: GameSettings = {
   ],
 }
 
-<<<<<<< HEAD
 const getFilteredQuestions = async (gameSettings: GameSettings, useFirebase = true): Promise<Question[]> => {
   if (useFirebase) {
     try {
@@ -107,9 +99,6 @@ const getFilteredQuestions = async (gameSettings: GameSettings, useFirebase = tr
   }
 
   // Fallback para perguntas locais
-=======
-const getFilteredQuestions = (gameSettings: GameSettings): Question[] => {
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   let filteredQuestions = [...mockQuestions]
   if (gameSettings.difficulty !== "mixed") {
     filteredQuestions = filteredQuestions.filter((q) => q.difficulty === gameSettings.difficulty)
@@ -191,10 +180,6 @@ export const useGameStore = create<GameStore>()(
   subscribeWithSelector(
     persist(
       (set, get) => ({
-<<<<<<< HEAD
-=======
-        // Initial state
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         currentUser: null,
         isAuthenticated: false,
         currentRoom: null,
@@ -337,7 +322,6 @@ export const useGameStore = create<GameStore>()(
         startGame: () => {
           const { currentRoom, gameSettings, availableRooms } = get()
           if (!currentRoom) return
-<<<<<<< HEAD
           
           // Função assíncrona para carregar perguntas
           const loadAndStartGame = async () => {
@@ -390,44 +374,11 @@ export const useGameStore = create<GameStore>()(
           };
 
           loadAndStartGame();
-=======
-          const gameQuestions = getFilteredQuestions(gameSettings)
-          if (gameQuestions.length === 0) {
-            set({ error: "Não foi possível encontrar perguntas para as configurações selecionadas." })
-            return
-          }
-
-          const updatedRoom = {
-            ...currentRoom,
-            gameState: "playing" as GameState,
-            questionIndex: 0,
-            timeRemaining: gameSettings.timePerQuestion,
-          }
-
-          const updatedRooms = availableRooms.map((r) => (r.id === currentRoom.id ? updatedRoom : r))
-          set({
-            currentRoom: updatedRoom,
-            currentGameQuestions: gameQuestions,
-            currentQuestion: gameQuestions[0],
-            playerAnswers: [],
-            availableRooms: updatedRooms,
-            error: null,
-            currentGameSession: {
-              startTime: new Date(),
-              questionsAnswered: 0,
-              correctAnswers: 0,
-              totalScore: 0,
-            },
-          })
-
-          saveRoomsToStorage(updatedRooms)
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         },
 
         restartGame: () => {
           const { currentRoom, gameSettings, availableRooms } = get()
           if (!currentRoom) return
-<<<<<<< HEAD
           
           // Função assíncrona para carregar perguntas
           const loadAndRestartGame = async () => {
@@ -487,43 +438,6 @@ export const useGameStore = create<GameStore>()(
           };
 
           loadAndRestartGame();
-=======
-          const gameQuestions = getFilteredQuestions(gameSettings)
-          if (gameQuestions.length === 0) {
-            set({ error: "Não foi possível encontrar perguntas para as configurações selecionadas." })
-            return
-          }
-          const resetScores: { [key: string]: number } = {}
-          currentRoom.players.forEach((player) => {
-            resetScores[player.id] = 0
-          })
-
-          const updatedRoom = {
-            ...currentRoom,
-            gameState: "playing" as GameState,
-            questionIndex: 0,
-            timeRemaining: gameSettings.timePerQuestion,
-            scores: resetScores,
-          }
-
-          const updatedRooms = availableRooms.map((r) => (r.id === currentRoom.id ? updatedRoom : r))
-          set({
-            currentRoom: updatedRoom,
-            currentGameQuestions: gameQuestions,
-            currentQuestion: gameQuestions[0],
-            playerAnswers: [],
-            availableRooms: updatedRooms,
-            error: null,
-            showResults: false,
-            currentGameSession: {
-              startTime: new Date(),
-              questionsAnswered: 0,
-              correctAnswers: 0,
-              totalScore: 0,
-            },
-          })
-          saveRoomsToStorage(updatedRooms)
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         },
 
         submitAnswer: (answerIndex, timeSpent) => {
@@ -702,7 +616,6 @@ export const useGameStore = create<GameStore>()(
           }
         },
 
-<<<<<<< HEAD
         initializeQuestions: async () => {
           try {
             const hasQuestions = await checkFirebaseQuestions();
@@ -725,8 +638,6 @@ export const useGameStore = create<GameStore>()(
             return await getFilteredQuestions(gameSettings, false);
           }
         },
-=======
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         setHydrated: (hydrated) => set({ isHydrated: hydrated }),
 
         setGameSettings: (settings) =>
@@ -765,14 +676,11 @@ export const useGameStore = create<GameStore>()(
             state.setHydrated(true)
             state.availableRooms = loadRoomsFromStorage()
             state.onlineUsers = loadOnlineUsersFromStorage()
-<<<<<<< HEAD
            
            // Inicializar perguntas no Firebase após hidratação
            setTimeout(() => {
              state.initializeQuestions();
            }, 1000);
-=======
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
           }
         },
       },

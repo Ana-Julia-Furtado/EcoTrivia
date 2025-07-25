@@ -10,11 +10,7 @@ import { UserStats } from "./UserStats"
 import { Ranking } from "./Ranking"
 
 export const Dashboard: React.FC = () => {
-<<<<<<< HEAD
   const { currentUser, availableRooms, isLoading, error } = useGameStore()
-=======
-  const { currentUser, availableRooms } = useGameStore()
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   const navigate = useNavigate()
 
   if (!currentUser) return null
@@ -73,7 +69,6 @@ export const Dashboard: React.FC = () => {
         <div className="lg:col-span-2">
           <UserStats />
 
-<<<<<<< HEAD
           {/* Loading/Error States */}
           {isLoading && (
             <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
@@ -90,8 +85,6 @@ export const Dashboard: React.FC = () => {
             </div>
           )}
 
-=======
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
           {/* Quick Actions */}
           <div className="mt-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Ações Rápidas</h2>

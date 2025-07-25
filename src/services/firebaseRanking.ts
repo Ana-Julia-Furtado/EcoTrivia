@@ -9,40 +9,16 @@ export interface RankingUser {
 
 export class FirebaseRankingService {
   private rankingRef = ref(database, 'users');
-<<<<<<< HEAD
-=======
-
-  /**
-   * Subscribe to real-time ranking updates
-   * @param onUpdate Callback function called when ranking data changes
-   * @param onError Callback function called when an error occurs
-   * @returns Unsubscribe function
-   */
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   subscribeToRanking(
     onUpdate: (users: RankingUser[]) => void,
     onError?: (error: Error) => void
   ): () => void {
-<<<<<<< HEAD
     const rankingQuery = query(this.rankingRef, orderByChild('score'));
     const handleValue = (snapshot: any) => {
       try {
         const users: RankingUser[] = [];
         if (snapshot.exists()) {
           const data = snapshot.val();
-=======
-    // Create a query to order users by score in descending order
-    const rankingQuery = query(this.rankingRef, orderByChild('score'));
-
-    const handleValue = (snapshot: any) => {
-      try {
-        const users: RankingUser[] = [];
-        
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          
-          // Convert Firebase data to array and sort by score (descending)
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
           Object.entries(data).forEach(([ra, userData]: [string, any]) => {
             if (userData && typeof userData === 'object') {
               users.push({
@@ -52,16 +28,8 @@ export class FirebaseRankingService {
               });
             }
           });
-<<<<<<< HEAD
           users.sort((a, b) => b.score - a.score);
         }
-=======
-          
-          // Sort by score in descending order (Firebase orderByChild sorts ascending)
-          users.sort((a, b) => b.score - a.score);
-        }
-        
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         onUpdate(users);
       } catch (error) {
         console.error('Error processing ranking data:', error);
@@ -77,29 +45,13 @@ export class FirebaseRankingService {
         onError(new Error('Erro de conexão com o Firebase'));
       }
     };
-<<<<<<< HEAD
     onValue(rankingQuery, handleValue, handleError);
-=======
-
-    // Set up the real-time listener
-    onValue(rankingQuery, handleValue, handleError);
-
-    // Return unsubscribe function
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
     return () => {
       off(rankingQuery, 'value', handleValue);
     };
   }
 
-<<<<<<< HEAD
   
-=======
-  /**
-   * Get current ranking (one-time fetch)
-   * @param limit Maximum number of users to return
-   * @returns Promise with ranking data
-   */
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   async getCurrentRanking(limit: number = 50): Promise<RankingUser[]> {
     return new Promise((resolve, reject) => {
       const rankingQuery = query(this.rankingRef, orderByChild('score'));

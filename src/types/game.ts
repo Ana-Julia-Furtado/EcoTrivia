@@ -1,20 +1,12 @@
 export interface User {
-<<<<<<< HEAD
   id: string; 
-=======
-  id: string; // Now using RA as ID
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   name: string;
   avatar?: string;
   level: number;
   totalScore: number;
   gamesPlayed: number;
   correctAnswers: number;
-<<<<<<< HEAD
   ra?: string; 
-=======
-  ra?: string; // Optional RA field for display
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 }
 
 export interface Question {
@@ -24,11 +16,7 @@ export interface Question {
   correctAnswer: number;
   difficulty: 'easy' | 'medium' | 'hard';
   category: QuestionCategory;
-<<<<<<< HEAD
   explanation: string;
-=======
-  explanation?: string;
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   points: number;
 }
 

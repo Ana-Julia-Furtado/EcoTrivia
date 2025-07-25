@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Users, Lock, Globe, Play, Settings } from 'lucide-react';
 import { useGameStore } from '../../store/gameStore';
 import { GameSettings } from './GameSettings';
-<<<<<<< HEAD
 import { LoadingSpinner } from './LoadingSpinner';
-=======
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
 
 export const GameLobby: React.FC = () => {
   const [showCreateRoom, setShowCreateRoom] = useState(false);
@@ -20,13 +17,9 @@ export const GameLobby: React.FC = () => {
     createRoom, 
     joinRoom, 
     startGame, 
-<<<<<<< HEAD
     currentUser,
     isLoading,
     error
-=======
-    currentUser 
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
   } = useGameStore();
 
   const handleCreateRoom = (e: React.FormEvent) => {
@@ -65,7 +58,6 @@ export const GameLobby: React.FC = () => {
                     disabled={currentRoom.players.length < 1}
                     className="flex items-center space-x-2 px-6 py-2 bg-gradient-nature text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-<<<<<<< HEAD
                     {isLoading ? (
                       <>
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -77,10 +69,6 @@ export const GameLobby: React.FC = () => {
                         <span>Start Game</span>
                       </>
                     )}
-=======
-                    <Play className="h-5 w-5" />
-                    <span>Start Game</span>
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
                   </button>
                 </>
               )}
@@ -120,15 +108,12 @@ export const GameLobby: React.FC = () => {
           )}
         </div>
 
-<<<<<<< HEAD
         {/* Error Message */}
         {error && (
           <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-red-700 text-sm">{error}</p>
           </div>
         )}
-=======
->>>>>>> f1e47b1da8a8b8e780d0ecd138e731483946378d
         {showSettings && (
           <GameSettings onClose={() => setShowSettings(false)} />
         )}
