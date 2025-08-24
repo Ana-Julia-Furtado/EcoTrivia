@@ -583,8 +583,6 @@ export const useGameStore = create<GameStore>()(
               set({ currentUser: finalUpdatedUser })
             }
           } catch (error) {
-            console.error("Error saving game to Firebase:", error)
-            set({ error: "Erro ao salvar progresso do jogo. Dados salvos localmente." })
           }
         },
 
