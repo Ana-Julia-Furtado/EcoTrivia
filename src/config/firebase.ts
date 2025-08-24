@@ -2,14 +2,14 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyArLLYKJHNhUyMCMtbsERwB4dW03YM43c8",
-  authDomain: "ecotrivia-e28cb.firebaseapp.com",
-  databaseURL: "https://ecotrivia-e28cb-default-rtdb.firebaseio.com/",
-  projectId: "ecotrivia-e28cb",
-  storageBucket: "ecotrivia-e28cb.firebasestorage.app",
-  messagingSenderId: "425527307962",
-  measurementId: "G-YH8MQL2HYH",
-  appId: "1:425527307962:web:ce459334e5e2f14d9f5c83"
+  apiKey: "AIzaSyDUXs1qKWRpvOUNIPqva9rT7eeEPMGamJE",
+  authDomain: "eco--trivia.firebaseapp.com",
+  databaseURL: "https://eco--trivia-default-rtdb.firebaseio.com",
+  projectId: "eco--trivia",
+  storageBucket: "eco--trivia.firebasestorage.app",
+  messagingSenderId: "936359839120",
+  appId: "1:936359839120:web:637381e8aa1c9d36729f15",
+  measurementId: "G-51MEQSKW4L"
 };
 const app = initializeApp(firebaseConfig);
 export const database = getDatabase(app);
