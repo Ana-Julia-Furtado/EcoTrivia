@@ -25,38 +25,6 @@ Um jogo interativo de trivia sobre sustentabilidade ambiental com autenticação
 - **Banco de Dados**: Firebase Realtime Database (usuários e perguntas)
 - **Autenticação**: Firebase Auth (customizada)
 
-## 📋 Configuração do Firebase
-
-1. Crie um projeto no [Firebase Console](https://console.firebase.google.com/)
-2. Ative o Realtime Database
-3. Configure as regras de segurança:
-
-```json
-{
-  "rules": {
-    "users": {
-      "$uid": {
-        ".read": true,
-        ".write": true
-      }
-    }
-  }
-}
-```
-
-4. Copie as configurações do projeto e atualize o arquivo `src/config/firebase.ts`:
-
-```typescript
-const firebaseConfig = {
-  apiKey: "sua-api-key",
-  authDomain: "seu-projeto.firebaseapp.com",
-  databaseURL: "https://seu-projeto-default-rtdb.firebaseio.com/",
-  projectId: "seu-projeto-id",
-  storageBucket: "seu-projeto.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "seu-app-id"
-};
-```
 
 ## 📝 Sistema de Perguntas
 
@@ -134,23 +102,6 @@ questions/
 - **Username**: Mínimo 2 caracteres (não precisa ser único)
 - **RA único**: Cada RA só pode ser cadastrado uma vez
 - **Autenticação**: Verificação em tempo real com Firebase
-
-## 🎯 Funcionalidades Futuras
-
-- [ ] Sistema de conquistas
-- [ ] Ranking global
-- [ ] Chat em tempo real nas salas
-- [x] Sistema de perguntas no Firebase
-- [ ] Interface para adicionar/editar perguntas
-- [ ] Sistema de níveis avançado
-- [ ] Estatísticas detalhadas
-
-## 📱 Responsividade
-
-O jogo é totalmente responsivo e funciona em:
-- Desktop
-- Tablet
-- Mobile
 
 ## 🌱 Sobre o Projeto
 
